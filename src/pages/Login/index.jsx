@@ -17,6 +17,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { loginAPI } from "../../services/api/auth";
 
 const theme = createTheme({
   palette: {
@@ -43,8 +44,9 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const res = await loginAPI(data);
+    console.log(res.data);
   };
 
   return (

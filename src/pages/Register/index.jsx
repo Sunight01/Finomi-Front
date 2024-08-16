@@ -18,6 +18,8 @@ import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import { registerAPI } from "../../services/api/auth";
+
 const theme = createTheme({
   palette: {
     black: {
@@ -34,7 +36,13 @@ const Register = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -43,8 +51,9 @@ const Register = () => {
     event.preventDefault();
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const res = await registerAPI(data);
+    console.log(res.data);
   };
 
   return (
@@ -77,7 +86,9 @@ const Register = () => {
                 }}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl sx={{ m: 0, width: "100%" }} variant="outlined">
-                    <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
+                    <InputLabel htmlFor="username">
+                      Nombre de usuario
+                    </InputLabel>
                     <OutlinedInput
                       id="username"
                       type="text"
