@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useForm, Controller } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
 
 import LoginTemplate from "../../components/templates/LoginTemplate";
 
@@ -17,7 +19,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { loginAPI } from "../../services/api/auth";
+import { loginAPI, verifyUserAPI } from "../../services/api/auth";
+import { getLocalStorage } from "../../functions/localStorage";
 
 const theme = createTheme({
   palette: {
@@ -37,6 +40,7 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -49,6 +53,23 @@ const Login = () => {
     console.log(res.data);
   };
 
+  useEffect( () => {
+    const verif = async() => {
+      const ls = getLocalStorage("user")
+      const ls_t = getLocalStorage("token")
+      if (ls) {
+        if (ls_t) {
+          const res = await verifyUserAPI()
+          console.log(res)
+          navigate(res.status === 200 ? "/dashboard" : "/");
+        }
+      } else {
+        navigate("/")
+      }
+    }
+    verif()
+   
+}, [])
   return (
     <>
       <LoginTemplate>

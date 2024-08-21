@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import LoginTemplate from "../../components/templates/LoginTemplate";
 
@@ -19,6 +20,7 @@ import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { registerAPI } from "../../services/api/auth";
+import { setLocalStorage } from "../../functions/localStorage";
 
 const theme = createTheme({
   palette: {
@@ -44,6 +46,7 @@ const Register = () => {
     },
   });
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -53,7 +56,11 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     const res = await registerAPI(data);
-    console.log(res.data);
+    setLocalStorage("user", {username: res.data.username, email: res.data.email});
+    setLocalStorage("token", {token: res.data.token});
+    if (res.status === 200) {
+      navigate("/dashboard");
+    }
   };
 
   return (
