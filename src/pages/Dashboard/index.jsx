@@ -43,7 +43,7 @@ const Dashboard = () => {
   return (
     <>
       <Template>
-        <header className="bg-blue-500 min-h-28 py-4 px-8">
+        <header className="bg-super-light-gray min-h-28 py-4 px-8">
           <h1 className="text-4xl font-semibold">Bienvenido, {user}!</h1>
           <p className="text-2xl font-medium">Junio, 2024</p>
         </header>

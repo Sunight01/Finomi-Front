@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        'main-white': '#FEF7FF'
+        'main-white': '#FEF7FF',
+        'super-light-gray': '#F4F4F5',
       },
       width: {
         '100': '30rem',
