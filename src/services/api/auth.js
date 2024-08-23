@@ -1,12 +1,25 @@
 import axios from '../axiosConfig';
-import axiosAuth from '../axiosConfigAuth';
+import { getLocalStorage } from '../../functions/localStorage';
 
 export const verifyUserAPI = async () => {
+  const { token } = await getLocalStorage('token');
   try {
-    const res = await axiosAuth.get(`/api/auth/verify`);
+    const res = await axios.get(`/api/auth/verify`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      wwithCredentials: true
+    });
     return res.data;
   } catch (error) {
-    return error;
+    if (error.name === "AxiosError") {
+      if (error.response.status === 401 && error.response.statusText === "Unauthorized") {
+        return {
+          status: 401,
+          message: "No tienes permisos para acceder a esta página"
+        }
+      }
+    }
   }
 }
 

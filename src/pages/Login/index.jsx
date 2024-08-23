@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+ 
 /* eslint-disable no-unused-vars */
 import { useForm, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import LoginTemplate from "../../components/templates/LoginTemplate";
 
@@ -20,7 +19,7 @@ import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { loginAPI, verifyUserAPI } from "../../services/api/auth";
-import { getLocalStorage } from "../../functions/localStorage";
+import { getLocalStorage, setLocalStorage } from "../../functions/localStorage";
 
 const theme = createTheme({
   palette: {
@@ -50,26 +49,13 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     const res = await loginAPI(data);
-    console.log(res.data);
+    setLocalStorage("user", {username: res.response.username, email: res.response.email});
+    setLocalStorage("token", {token: res.response.token});
+    if (res.status === 200) {
+      navigate("/dashboard");
+    }
   };
 
-  useEffect( () => {
-    const verif = async() => {
-      const ls = getLocalStorage("user")
-      const ls_t = getLocalStorage("token")
-      if (ls) {
-        if (ls_t) {
-          const res = await verifyUserAPI()
-          console.log(res)
-          navigate(res.status === 200 ? "/dashboard" : "/");
-        }
-      } else {
-        navigate("/")
-      }
-    }
-    verif()
-   
-}, [])
   return (
     <>
       <LoginTemplate>

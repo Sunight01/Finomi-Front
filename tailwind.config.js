@@ -18,6 +18,12 @@ export default {
         '104': '34rem',
         '106': '36rem', 
       },
+      margin: {
+        '4px': '10px'
+      },
+      screens: {
+        sm: '320px',
+      },
       fontFamily:{
         'inter': ['Inter', 'sans-serif']
       }
