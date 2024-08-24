@@ -92,7 +92,7 @@ const Dashboard = () => {
 
         </div>
         
-        <div className="h-auto w-auto m-8 sm:max-md:m-4 rounded-2xl h-auto w-full flex flex-wrap justify-between shadow-lg p-8 sm:max-md:p-4">
+        <div className="h-auto w-auto m-8 sm:max-md:m-4 rounded-2xl flex flex-wrap justify-between shadow-lg p-8 sm:max-md:p-4">
           <h2 className="text-xl sm:max-md:text-lg font-semibold sm:max-md:text-center mb-2">Ultimo consejo</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus praesentium eius totam vero ipsa tenetur dolores incidunt! Sint beatae, itaque voluptates laudantium alias aliquam unde. Modi at deserunt illo eaque? lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus praesentium eius totam vero ipsa tenetur dolores incidunt! Sint beatae, itaque voluptates laudantium alias aliquam unde. Modi at deserunt illo eaque?</p>
         </div>
