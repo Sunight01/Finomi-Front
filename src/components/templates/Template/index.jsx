@@ -9,7 +9,7 @@ const Template = (props) => {
           <MenuNavbar />
           <UserMenu />
         </aside>
-        <div className="bg-white w-100 min-h-auto w-full md:my-8 mr-8 sm:my-4 rounded-3xl border-gray-200 overflow-hidden">
+        <div className="bg-white min-h-auto w-full md:my-8 mr-8 sm:my-4 rounded-3xl border-gray-200 overflow-hidden border-box">
           {props.children}
         </div>
       </div>
