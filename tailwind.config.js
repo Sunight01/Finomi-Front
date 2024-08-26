@@ -9,6 +9,9 @@ export default {
       colors: {
         'main-white': '#FEF7FF',
         'super-light-gray': '#F4F4F5',
+        'light-green':'#B8FFB7',
+        'light-blue':'#C6E7FF',
+        'light-red':'#FFCFCF',
       },
       width: {
         '100': '30rem',
