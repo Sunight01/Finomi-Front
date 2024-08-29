@@ -1,4 +1,3 @@
- 
 /* eslint-disable no-unused-vars */
 import { useForm, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -49,7 +48,8 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     const res = await loginAPI(data);
-    setLocalStorage("user", {username: res.response.username, email: res.response.email});
+    console.log(res.data)
+    setLocalStorage("user", {id: res.response.id, username: res.response.username, email: res.response.email});
     setLocalStorage("token", {token: res.response.token});
     if (res.status === 200) {
       navigate("/dashboard");

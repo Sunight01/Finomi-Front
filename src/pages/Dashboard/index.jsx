@@ -1,12 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { verifyUserAPI } from "../../services/api/auth";
-import {
-  getLocalStorage,
-  removeLocalStorage,
-} from "../../functions/localStorage";
 
 import Template from "../../components/templates/Template";
 
@@ -15,8 +8,6 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState("user");
 
   const [mayorIngreso, setMayorIngreso] = useState(0);
   const [mayorGasto, setMayorGasto] = useState(0);
@@ -28,47 +19,14 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const clearStorage = () => {
-      removeLocalStorage("user");
-      removeLocalStorage("token");
-      navigate("/");
-    };
-
-    const verif = async () => {
-      const ls = getLocalStorage("user");
-      const ls_t = getLocalStorage("token");
-
-      const { username } = ls;
-
-      if (ls === null || ls_t === null) {
-        clearStorage();
-        return;
-      }
-
-      const res = await verifyUserAPI();
-      if (res.status === 401) {
-        clearStorage();
-      }
-
-      setUser(username);
-    };
-
-    verif();
     setMayorIngreso(30000);
     setMayorGasto(10000);
-  }, []);
-
-  useEffect(() => {
     getBeneficio();
   }, [mayorIngreso, mayorGasto]);
 
   return (
     <>
       <Template>
-        <header className="bg-super-light-gray min-h-28 py-4 px-8">
-          <h1 className="text-4xl font-semibold">Bienvenido, {user}!</h1>
-          <p className="text-2xl font-medium">Junio, 2024</p>
-        </header>
 
         <div className="h-auto w-auto flex flex-wrap sm:max-xl:flex-row justify-between sm:max-xl:justify-center items-center content-center p-8 sm:max-md:p-4">
           <div className="flex flex-col shadow-lg justify-center items-center content-center h-60 w-100 bg-light-green rounded-2xl m-4 gap-12">
