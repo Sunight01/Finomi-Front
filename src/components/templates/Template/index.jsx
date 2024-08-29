@@ -12,6 +12,21 @@ import { verifyUserAPI } from "../../../services/api/auth";
 
 const Template = (props) => {
   const [user, setUser] = useState("user");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,7 +67,7 @@ const Template = (props) => {
         <div className="bg-white min-h-auto w-full md:my-8 mr-8 sm:my-4 rounded-3xl border-gray-200 overflow-hidden border-box ml-24">
           <header className="bg-super-light-gray min-h-28 py-4 px-8">
             <h1 className="sm:text-2xl mbm:text-4xl font-semibold">Bienvenido, {user}!</h1>
-            <p className="sm:text-xl mbm:text-2xl font-medium">Junio, 2024</p>
+            <p className="sm:text-xl mbm:text-2xl font-medium">{months[currentDate.getMonth()]}, {currentDate.getFullYear()}</p>
           </header>
           <div className="h-full w-full">
             {props.children}

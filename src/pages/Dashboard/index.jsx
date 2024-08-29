@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 
 import Template from "../../components/templates/Template";
@@ -7,31 +6,102 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 
-const Dashboard = () => {
+import { getTransactions } from "../../services/api/transactions";
 
-  const [mayorIngreso, setMayorIngreso] = useState(0);
-  const [mayorGasto, setMayorGasto] = useState(0);
+const Dashboard = () => {
+  const [totalIngresos, setTotalIngresos] = useState(0);
+  const [totalGastos, setTotalGastos] = useState(0);
   const [beneficio, setBeneficio] = useState(0);
 
-  const getBeneficio = () => {
-    const result = mayorIngreso - mayorGasto;
+  const [mayorIngreso, setMayorIngreso] = useState({});
+  const [mayorGasto, setMayorGasto] = useState({});
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
+  const maxTransactions = (data) => {
+
+    const filterTransactionsByMonth = (transactions, date) => {
+      return transactions.filter((transaction) => {
+        const transactionDate = new Date(transaction.date);
+        return (
+          transactionDate.getMonth() === date.getMonth() &&
+          transactionDate.getFullYear() === date.getFullYear()
+        );
+      });
+    };
+
+    const filteredTransactions = filterTransactionsByMonth(
+      data,
+      currentDate
+    );
+
+    const maxIngreso = filteredTransactions
+      .filter((transaction) => transaction.type === "Ingreso")
+      .reduce(
+        (prev, current) => (prev.amount > current.amount ? prev : current),
+        {}
+      );
+
+    // Encontrar el mayor gasto
+    const maxGasto = filteredTransactions
+      .filter((transaction) => transaction.type === "Gasto")
+      .reduce(
+        (prev, current) => (prev.amount > current.amount ? prev : current),
+        {}
+      );
+
+    const totalIngresos = filteredTransactions
+      .filter((transaction) => transaction.type === "Ingreso")
+      .reduce((total, transaction) => total + parseInt(transaction.amount), 0);
+
+    // Sumar todos los gastos
+    const totalGastos = filteredTransactions
+      .filter((transaction) => transaction.type === "Gasto")
+      .reduce((total, transaction) => total + parseInt(transaction.amount), 0);
+
+    const result = totalIngresos - totalGastos;
+
+    setMayorGasto(maxGasto);
+    setMayorIngreso(maxIngreso);
     setBeneficio(result);
+
+    setTotalIngresos(totalIngresos);
+    setTotalGastos(totalGastos);
   };
 
   useEffect(() => {
-    setMayorIngreso(30000);
-    setMayorGasto(10000);
-    getBeneficio();
-  }, [mayorIngreso, mayorGasto]);
+    const callMaxTransactions = async () => {
+      const res = await getTransactions();
+
+      if (res.status === 200) {
+        maxTransactions(res.response);
+      }
+    };
+    callMaxTransactions();
+  }, []);
 
   return (
     <>
       <Template>
-
         <div className="h-auto w-auto flex flex-wrap sm:max-xl:flex-row justify-between sm:max-xl:justify-center items-center content-center p-8 sm:max-md:p-4">
           <div className="flex flex-col shadow-lg justify-center items-center content-center h-60 w-100 bg-light-green rounded-2xl m-4 gap-12">
             <CheckCircleOutlineIcon fontSize="large" />
-            <span className="text-4xl font-semibold">${mayorIngreso}</span>
+            <span className="text-4xl font-semibold">${totalIngresos}</span>
             <span className="text-xl font-semibold">Ingresos</span>
           </div>
           <div className="flex flex-col shadow-lg justify-center items-center content-center h-60 w-100 bg-light-blue rounded-2xl m-4 gap-12">
@@ -41,7 +111,7 @@ const Dashboard = () => {
           </div>
           <div className="flex flex-col shadow-lg justify-center items-center content-center h-60 w-100 bg-light-red rounded-2xl m-4 gap-12">
             <HighlightOffIcon fontSize="large" />
-            <span className="text-4xl font-semibold">${mayorGasto}</span>
+            <span className="text-4xl font-semibold">${totalGastos}</span>
             <span className="text-xl font-semibold">Gastos</span>
           </div>
         </div>
@@ -52,10 +122,14 @@ const Dashboard = () => {
               <span className="flex justify-center items-center text-center font-semibold">
                 Mayor ingreso
               </span>
-              <span className="flex justify-center items-center">Trabajo</span>
+              <span className="flex justify-center items-center">
+                {mayorIngreso.title}
+              </span>
             </div>
             <div>
-              <span className="text-3xl font-semibold">$10000</span>
+              <span className="text-3xl font-semibold">
+                ${mayorIngreso.amount}
+              </span>
             </div>
           </div>
 
@@ -64,10 +138,14 @@ const Dashboard = () => {
               <span className="flex justify-center items-center text-center font-semibold">
                 Mayor gasto
               </span>
-              <span className="flex justify-center items-center">Trabajo</span>
+              <span className="flex justify-center items-center">
+                {mayorGasto.title}
+              </span>
             </div>
             <div>
-              <span className="text-3xl font-semibold">$10000</span>
+              <span className="text-3xl font-semibold">
+                ${mayorGasto.amount}
+              </span>
             </div>
           </div>
         </div>
@@ -101,13 +179,7 @@ const Dashboard = () => {
             adipisicing elit. Debitis nobis nam ullam, voluptatem dolorum fugit
             non maxime nesciunt! Doloremque id sint nam impedit esse sit quia
             explicabo dolore eos tenetur! Lorem ipsum, dolor sit amet
-            consectetur adipisicing elit. Accusantium autem voluptates est dicta
-            fugiat delectus, alias neque quaerat atque omnis adipisci.
-            Exercitationem voluptatem porro vero excepturi accusamus
-            consequuntur dolore dolor. Lorem ipsum dolor sit amet, consectetur
-            adipisicing elit. Tempora harum quibusdam autem quisquam facilis
-            nesciunt distinctio ducimus incidunt porro? Perferendis dolorem est
-            asperiores expedita dolor neque laborum quidem dolore corrupti!{" "}
+            consectetur adipisicing elit. Accusantium autem voluptates est dicta{" "}
           </p>
         </div>
       </Template>

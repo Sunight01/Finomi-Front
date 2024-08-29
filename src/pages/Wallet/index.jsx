@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 
 import { getTransactions } from "../../services/api/transactions";
@@ -15,18 +16,57 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 
 const Wallet = () => {
-  const [months, setMonths] = useState([]);
-  const [month, setMonth] = useState(2);
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [transactions, setTransactions] = useState([]);
 
   const [openCreate, setOpenCreate] = useState(false);
 
+  const isCurrentMonth = (date) => {
+    const now = new Date();
+    return (
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    );
+  };
+
+  const disablePastMonths = (date) => {
+    const now = new Date();
+    if (date.getFullYear() === now.getFullYear()) {
+      const dif = now.getMonth() - date.getMonth();
+      if (dif === 2) {
+        return true;
+      }
+    }
+  };
+
   const handleNextMonth = () => {
-    setMonth(month + 1);
+    setCurrentDate((prevDate) => {
+      const newDate = new Date(prevDate);
+      newDate.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
   };
 
   const handleMinusMonth = () => {
-    setMonth(month - 1);
+    setCurrentDate((prevDate) => {
+      const newDate = new Date(prevDate);
+      newDate.setMonth(newDate.getMonth() - 1);
+      return newDate;
+    });
   };
 
   const handleOpenCreate = () => {
@@ -37,42 +77,71 @@ const Wallet = () => {
     setOpenCreate(false);
   };
 
+  const getUserTransactions = async (data) => {
+    setTransactions(data);
+  };
+
+  const addTransaction = (newTransaction) => {
+    setTransactions((prevTransactions) => [
+      ...prevTransactions,
+      newTransaction,
+    ]);
+  };
+
+  const filterTransactionsByMonth = (transactions, date) => {
+    return transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.date);
+      return (
+        transactionDate.getMonth() === date.getMonth() &&
+        transactionDate.getFullYear() === date.getFullYear()
+      );
+    });
+  };
+
+  const filteredTransactions = filterTransactionsByMonth(
+    transactions,
+    currentDate
+  );
+
   useEffect(() => {
-    setMonths(["Junio", "Julio", "Agosto"]);
-    const getUserTransactions = async () => {
+    const callTransactions = async () => {
       const res = await getTransactions();
-      console.log(res);
       if (res.status === 200) {
-        setTransactions(res.response);
+        if (transactions.length === 0) {
+          getUserTransactions(res.response);
+        }
       }
     };
-
-    getUserTransactions();
+    callTransactions();
   }, []);
   return (
     <>
       <Template>
         <div className="w-full h-auto flex flex-row justify-center items-center mt-8">
           <button
-            className={`hover:bg-gray-200 w-12 h-12 rounded-full flex justify-center items-center ${
-              month === 0 ? "opacity-50 cursor-not-allowed" : ""
+            className={`w-12 h-12 rounded-full flex justify-center items-center ${
+              disablePastMonths(currentDate)
+                ? "bg-gray-100 cursor-not-allowed opacity-50"
+                : "hover:bg-gray-200"
             }`}
             onClick={handleMinusMonth}
-            disabled={month === 0}
+            disabled={disablePastMonths(currentDate)}
           >
             <ArrowBackIosNewIcon fontSize="large" />
           </button>
           <div className="lg:w-32 mbm:max-lg:w-20 md:mx-36 mbm:max-md:mx-2 mx-1 text-center">
             <span className="lg:text-3xl mbm:max-lg:text-2xl sm:text-xl font-semibold">
-              {months[month]}
+              {months[currentDate.getMonth()]} {currentDate.getFullYear()}
             </span>
           </div>
           <button
-            className={`hover:bg-gray-200 w-12 h-12 rounded-full flex justify-center items-center ${
-              month === 2 ? "opacity-50 cursor-not-allowed" : ""
+            className={`w-12 h-12 rounded-full flex justify-center items-center ${
+              isCurrentMonth(currentDate)
+                ? "bg-gray-100 cursor-not-allowed opacity-50"
+                : "hover:bg-gray-200"
             }`}
             onClick={handleNextMonth}
-            disabled={month === 2}
+            disabled={isCurrentMonth(currentDate)}
           >
             <ArrowForwardIosIcon fontSize="large" />
           </button>
@@ -94,7 +163,7 @@ const Wallet = () => {
           </Tooltip>
         </div>
 
-        {!transactions.length && (
+        {!filteredTransactions.length && (
           <div className="h-auto w-auto p-10 pt-4 flex flex-row justify-center items-center">
             <p className="text-center text-gray-500 text-lg">
               No tienes ningún ingreso o gasto en este mes, añade alguno para
@@ -110,7 +179,7 @@ const Wallet = () => {
             </span>
 
             <div className="my-12 w-full flex flex-row flex-wrap gap-8">
-              {transactions
+              {filteredTransactions
                 .filter((transaction) => transaction.type === "Ingreso") // Filtra las transacciones
                 .map((transaction) => (
                   <div
@@ -130,12 +199,18 @@ const Wallet = () => {
                       <span className="text-xl font-semibold text-green-600">
                         ${transaction.amount}
                       </span>
-                      <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200">
-                        <EditIcon fontSize="medium" />
-                      </button>
-                      <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200">
-                        <VisibilityOutlinedIcon fontSize="large" />
-                      </button>
+
+                      <Tooltip title="Editar">
+                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200">
+                          <EditIcon fontSize="medium" />
+                        </button>
+                      </Tooltip>
+
+                      <Tooltip title="Ver">
+                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200">
+                          <VisibilityOutlinedIcon fontSize="large" />
+                        </button>
+                      </Tooltip>
                     </div>
                   </div>
                 ))}
@@ -155,7 +230,7 @@ const Wallet = () => {
             </span>
 
             <div className="my-10 w-full flex flex-row flex-wrap gap-8">
-              {transactions
+              {filteredTransactions
                 .filter((transaction) => transaction.type === "Gasto") // Filtra las transacciones
                 .map((transaction) => (
                   <div
@@ -175,19 +250,27 @@ const Wallet = () => {
                       <span className="text-xl font-semibold text-red-600">
                         ${transaction.amount}
                       </span>
-                      <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200">
-                        <EditIcon fontSize="medium" />
-                      </button>
-                      <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200">
-                        <VisibilityOutlinedIcon fontSize="large" />
-                      </button>
+                      <Tooltip title="Editar">
+                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200">
+                          <EditIcon fontSize="medium" />
+                        </button>
+                      </Tooltip>
+                      <Tooltip title="Ver">
+                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200">
+                          <VisibilityOutlinedIcon fontSize="large" />
+                        </button>
+                      </Tooltip>
                     </div>
                   </div>
                 ))}
             </div>
           </div>
         </div>
-        <CreateDialog open={openCreate} close={handleCloseCreate} />
+        <CreateDialog
+          open={openCreate}
+          close={handleCloseCreate}
+          add={addTransaction}
+        />
       </Template>
     </>
   );

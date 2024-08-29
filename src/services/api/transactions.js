@@ -26,3 +26,20 @@ export const getTransactions = async () => {
     return [];
   }
 };
+
+export const getMaxTransactions = async () => {
+  const { token } = await getLocalStorage("token");
+  const { id } = await getLocalStorage("user");
+  try {
+    const res = await axios.get(`api/transactions/get-max/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res.data)
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
