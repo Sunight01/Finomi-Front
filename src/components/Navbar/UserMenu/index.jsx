@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { logoutAPI } from "../../../services/api/auth";
 
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -13,13 +15,26 @@ import Divider from '@mui/material/Divider';
 const UserMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = async () => {
+    const res = await logoutAPI();
+    if (res.status === 200) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setAnchorEl(null);
+      navigate('/');
+    }
+
+  }
 
   return (
     <>
@@ -52,7 +67,7 @@ const UserMenu = () => {
           sx={{ 
             '& .MuiPaper-root': {
               margin: '0px 10px 0px 20px',
-              borderRadius: '12px', // Ajusta el valor según tus necesidades
+              borderRadius: '12px',
             }
            }}
         >
@@ -75,7 +90,7 @@ const UserMenu = () => {
             </Link>
           </MenuItem>
           <Divider />
-          <MenuItem onClick={handleClose} className="w-full h-full">Salir</MenuItem>
+          <MenuItem onClick={handleLogout} className="w-full h-full">Salir</MenuItem>
         </Menu>
       </div>
     </>

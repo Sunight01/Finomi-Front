@@ -5,6 +5,7 @@ import { getTransactions } from "../../services/api/transactions";
 
 import Template from "../../components/templates/Template";
 import CreateDialog from "./CreateDialog";
+import EditDialog from "./EditDialog";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -34,6 +35,9 @@ const Wallet = () => {
   const [transactions, setTransactions] = useState([]);
 
   const [openCreate, setOpenCreate] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const isCurrentMonth = (date) => {
     const now = new Date();
@@ -77,6 +81,25 @@ const Wallet = () => {
     setOpenCreate(false);
   };
 
+  const handleOpenEdit = (data) => {
+    setSelectedTransaction(data);
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const onUpdate = (updatedTransaction) => {
+    const updatedTransactions = transactions.map((transaction) =>
+      transaction.id === updatedTransaction.id
+        ? updatedTransaction
+        : transaction
+    );
+    console.log(updatedTransactions);
+    setTransactions(updatedTransactions);
+  };
+
   const getUserTransactions = async (data) => {
     setTransactions(data);
   };
@@ -118,33 +141,38 @@ const Wallet = () => {
     <>
       <Template>
         <div className="w-full h-auto flex flex-row justify-center items-center mt-8">
-          <button
-            className={`w-12 h-12 rounded-full flex justify-center items-center ${
-              disablePastMonths(currentDate)
-                ? "bg-gray-100 cursor-not-allowed opacity-50"
-                : "hover:bg-gray-200"
-            }`}
-            onClick={handleMinusMonth}
-            disabled={disablePastMonths(currentDate)}
-          >
-            <ArrowBackIosNewIcon fontSize="large" />
-          </button>
+          <Tooltip title="Volver al mes anterior">
+            <button
+              className={`w-12 h-12 rounded-full flex justify-center items-center ${
+                disablePastMonths(currentDate)
+                  ? "bg-gray-100 cursor-not-allowed opacity-50"
+                  : "hover:bg-gray-200"
+              }`}
+              onClick={handleMinusMonth}
+              disabled={disablePastMonths(currentDate)}
+            >
+              <ArrowBackIosNewIcon fontSize="large" />
+            </button>
+          </Tooltip>
+
           <div className="lg:w-32 mbm:max-lg:w-20 md:mx-36 mbm:max-md:mx-2 mx-1 text-center">
             <span className="lg:text-3xl mbm:max-lg:text-2xl sm:text-xl font-semibold">
               {months[currentDate.getMonth()]} {currentDate.getFullYear()}
             </span>
           </div>
-          <button
-            className={`w-12 h-12 rounded-full flex justify-center items-center ${
-              isCurrentMonth(currentDate)
-                ? "bg-gray-100 cursor-not-allowed opacity-50"
-                : "hover:bg-gray-200"
-            }`}
-            onClick={handleNextMonth}
-            disabled={isCurrentMonth(currentDate)}
-          >
-            <ArrowForwardIosIcon fontSize="large" />
-          </button>
+          <Tooltip title="Ir al mes siguiente">
+            <button
+              className={`w-12 h-12 rounded-full flex justify-center items-center ${
+                isCurrentMonth(currentDate)
+                  ? "bg-gray-100 cursor-not-allowed opacity-50"
+                  : "hover:bg-gray-200"
+              }`}
+              onClick={handleNextMonth}
+              disabled={isCurrentMonth(currentDate)}
+            >
+              <ArrowForwardIosIcon fontSize="large" />
+            </button>
+          </Tooltip>
         </div>
 
         <div className="w-full h-10 flex flex-row justify-center items-center mt-4">
@@ -180,7 +208,7 @@ const Wallet = () => {
 
             <div className="my-12 w-full flex flex-row flex-wrap gap-8">
               {filteredTransactions
-                .filter((transaction) => transaction.type === "Ingreso") // Filtra las transacciones
+                .filter((transaction) => transaction.type === "Ingreso")
                 .map((transaction) => (
                   <div
                     className="h-26 w-full text-left flex flex-row justify-between items-center"
@@ -201,7 +229,10 @@ const Wallet = () => {
                       </span>
 
                       <Tooltip title="Editar">
-                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200">
+                        <button
+                          className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200"
+                          onClick={() => handleOpenEdit(transaction)}
+                        >
                           <EditIcon fontSize="medium" />
                         </button>
                       </Tooltip>
@@ -231,7 +262,7 @@ const Wallet = () => {
 
             <div className="my-10 w-full flex flex-row flex-wrap gap-8">
               {filteredTransactions
-                .filter((transaction) => transaction.type === "Gasto") // Filtra las transacciones
+                .filter((transaction) => transaction.type === "Gasto")
                 .map((transaction) => (
                   <div
                     className="h-26 w-full text-left flex flex-row justify-between items-center"
@@ -270,6 +301,12 @@ const Wallet = () => {
           open={openCreate}
           close={handleCloseCreate}
           add={addTransaction}
+        />
+        <EditDialog
+          open={openEdit}
+          close={handleCloseEdit}
+          update={onUpdate}
+          transaction={selectedTransaction}
         />
       </Template>
     </>

@@ -57,7 +57,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     const res = await registerAPI(data);
-    setLocalStorage("user", {username: res.response.username, email: res.response.email});
+    setLocalStorage("user", {id: res.response.id, username: res.response.username, email: res.response.email});
     setLocalStorage("token", {token: res.response.token});
     if (res.status === 200) {
       navigate("/dashboard");

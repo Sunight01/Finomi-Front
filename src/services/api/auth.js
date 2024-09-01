@@ -41,3 +41,17 @@ export const registerAPI = async (data) => {
     return error;
   }
 };
+
+export const logoutAPI = async () => {
+  const { token } = await getLocalStorage('token');
+  try {
+    const res = await axios.get(`/api/auth/logout`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

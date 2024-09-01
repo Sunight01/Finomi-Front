@@ -26,7 +26,7 @@ const tags = [
   { value: "Otro", label: "Otro" },
 ];
 
-const CreateDialog = ({ open, close, add }) => {
+const EditDialog = ({ open, close, update, transaction }) => {
   const { id } = getLocalStorage("user");
   const {
     control,
@@ -59,26 +59,45 @@ const CreateDialog = ({ open, close, add }) => {
   const [visible, setVisible] = useState(false);
 
   const handleClose = () => {
+    console.log("handleClose");
     reset();
     close();
   };
-  
+
   const onSubmit = async (data) => {
-    const res = await createTransaction(data);
-    add(res.response);
+    const tr = { ...data, id: transaction.id };
+    update(tr);
+    console.log(tr)
     handleClose();
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0]; // Esto dará el formato "yyyy-MM-dd"
+  };
+
   useEffect(() => {
-    setVisible(open);
-  }, [open]);
+    if (transaction) {
+      reset({
+        user_id: id,
+        title: transaction.title,
+        amount: transaction.amount,
+        type: transaction.type,
+        date: formatDate(transaction.date),
+        tag: transaction.tag,
+        description: transaction.description,
+      });
+      setVisible(open);
+    }
+  }, [transaction, id, reset, open]);
   return (
     <>
       {visible && (
         <DialogTemplate>
           <div className="flex flex-col px-8 py-10 gap-4">
             <div className="flex flex-row justify-between items-center">
-              <h1 className="text-2xl font-semibold">Crear</h1>
+              <h1 className="text-2xl font-semibold">Editar</h1>
               <button onClick={handleClose}>
                 <CloseIcon fontSize="large" />
               </button>
@@ -256,7 +275,7 @@ const CreateDialog = ({ open, close, add }) => {
               <ThemeProvider theme={theme}>
                 <Stack spacing={0} direction="row">
                   <Button type="onSubmit" variant="contained" color="black">
-                    Crear
+                    Confirmar
                   </Button>
                 </Stack>
               </ThemeProvider>
@@ -268,4 +287,4 @@ const CreateDialog = ({ open, close, add }) => {
   );
 };
 
-export default CreateDialog;
+export default EditDialog;

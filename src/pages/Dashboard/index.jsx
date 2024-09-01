@@ -15,23 +15,8 @@ const Dashboard = () => {
 
   const [mayorIngreso, setMayorIngreso] = useState({});
   const [mayorGasto, setMayorGasto] = useState({});
-
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
+  
+  const currentDate = new Date();
 
   const maxTransactions = (data) => {
 
