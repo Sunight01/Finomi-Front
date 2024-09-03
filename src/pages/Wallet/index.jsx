@@ -8,10 +8,11 @@ import CreateDialog from "./CreateDialog";
 import EditDialog from "./EditDialog";
 import ViewDialog from "./ViewDialog";
 
+import { EmptyMessage } from "../../components/Wallet/EmptyMessage";
+import { TransactionCard } from "../../components/Wallet/TransactionCard";
+
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import Divider from "@mui/material/Divider";
@@ -208,119 +209,57 @@ const Wallet = () => {
           </Tooltip>
         </div>
 
-        {!filteredTransactions.length && (
-          <div className="h-auto w-auto p-10 pt-4 flex flex-row justify-center items-center">
-            <p className="text-center text-gray-500 text-lg">
-              No tienes ningún ingreso o gasto en este mes, añade alguno para
-              verlo aquí!
-            </p>
+        {!filteredTransactions.length ? (
+          <EmptyMessage message="No tienes ningún ingreso o gasto en este mes, añade alguno para verlo aquí!" />
+        ) : (
+          <div className="h-auto w-auto p-10 pt-4 flex flex-row justify-between">
+            <div className="h-full w-[830px] max-w-[830px]">
+              <span className="text-2xl text-gray-500 font-semibold hover:text-green-500 duration-200">
+                Ingresos
+              </span>
+
+              <div className="my-12 w-full flex flex-row flex-wrap gap-8">
+                {filteredTransactions
+                  .filter((transaction) => transaction.type === "Ingreso")
+                  .map((transaction) => (
+                    <TransactionCard
+                    transaction={transaction}
+                      handleOpenEdit={handleOpenEdit}
+                      handleOpenView={handleOpenView}
+                      color="green"
+                    />
+                  ))}
+              </div>
+            </div>
+
+            <Divider
+              orientation="vertical"
+              variant="middle"
+              flexItem
+              sx={{ margin: "0 20px" }}
+            />
+
+            <div className="h-full w-200 text-right w-[830px] max-w-[830px]">
+              <span className="text-2xl text-gray-500 font-semibold hover:text-red-400 duration-200">
+                Gastos
+              </span>
+
+              <div className="my-10 w-full flex flex-row flex-wrap gap-8">
+                {filteredTransactions
+                  .filter((transaction) => transaction.type === "Gasto")
+                  .map((transaction) => (
+                    <TransactionCard
+                      transaction={transaction}
+                      handleOpenEdit={handleOpenEdit}
+                      handleOpenView={handleOpenView}
+                      color="red"
+                    />
+                  ))}
+              </div>
+            </div>
           </div>
         )}
 
-        <div className="h-auto w-auto p-10 pt-4 flex flex-row justify-between">
-          <div className="h-full w-[830px] max-w-[830px]">
-            <span className="text-2xl text-gray-500 font-semibold hover:text-green-500 duration-200">
-              Ingresos
-            </span>
-
-            <div className="my-12 w-full flex flex-row flex-wrap gap-8">
-              {filteredTransactions
-                .filter((transaction) => transaction.type === "Ingreso")
-                .map((transaction) => (
-                  <div
-                    className="h-26 w-full text-left flex flex-row justify-between items-center"
-                    key={transaction.id}
-                  >
-                    <div className="flex flex-col gap-1">
-                      <h1 className="text-lg font-semibold">
-                        {transaction.title}
-                      </h1>
-                      <span className="text-lg text-gray-500">
-                        {transaction.description}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-row justify-center items-center gap-4">
-                      <span className="text-xl font-semibold text-green-600">
-                        ${transaction.amount}
-                      </span>
-
-                      <Tooltip title="Editar">
-                        <button
-                          className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200"
-                          onClick={() => handleOpenEdit(transaction)}
-                        >
-                          <EditIcon fontSize="medium" />
-                        </button>
-                      </Tooltip>
-
-                      <Tooltip title="Ver">
-                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200"
-                        onClick={() => handleOpenView(transaction)}
-                        >
-                          <VisibilityOutlinedIcon fontSize="large" />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          <Divider
-            orientation="vertical"
-            variant="middle"
-            flexItem
-            sx={{ margin: "0 20px" }}
-          />
-
-          <div className="h-full w-200 text-right w-[830px] max-w-[830px]">
-            <span className="text-2xl text-gray-500 font-semibold hover:text-red-400 duration-200">
-              Gastos
-            </span>
-
-            <div className="my-10 w-full flex flex-row flex-wrap gap-8">
-              {filteredTransactions
-                .filter((transaction) => transaction.type === "Gasto")
-                .map((transaction) => (
-                  <div
-                    className="h-26 w-full text-left flex flex-row justify-between items-center"
-                    key={transaction.id}
-                  >
-                    <div className="flex flex-col gap-1">
-                      <h1 className="text-lg font-semibold">
-                        {transaction.title}
-                      </h1>
-                      <span className="text-lg text-gray-500">
-                        {transaction.description}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-row justify-center items-center gap-4">
-                      <span className="text-xl font-semibold text-red-600">
-                        ${transaction.amount}
-                      </span>
-                      <Tooltip title="Editar">
-                        <button
-                          className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200"
-                          onClick={() => handleOpenEdit(transaction)}
-                        >
-                          <EditIcon fontSize="medium" />
-                        </button>
-                      </Tooltip>
-                      <Tooltip title="Ver">
-                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200"
-                        onClick={() => handleOpenView(transaction)}
-                        >
-                          <VisibilityOutlinedIcon fontSize="large" />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
         <CreateDialog
           open={openCreate}
           close={handleCloseCreate}
@@ -339,7 +278,6 @@ const Wallet = () => {
           transaction={selectedTransaction}
           deleteData={onDelete}
         />
-
       </Template>
     </>
   );
