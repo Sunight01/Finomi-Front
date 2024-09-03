@@ -11,6 +11,27 @@ export const createTransaction = async (data) => {
   return res.data;
 };
 
+export const updateTransaction = async (data) => {
+  const { token } = await getLocalStorage("token");
+  const res = await axios.put(`api/transactions/update/${data.id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+};
+
+export const deleteTransactionAPI = async (data) => {
+  const { token } = await getLocalStorage("token");
+  const auth = `Bearer ${token}`;
+  const res = await axios.put(`api/transactions/delete/${data.id}`, data, {
+    headers: {
+      Authorization: auth,
+    },
+  });
+  return res.data;
+};
+
 export const getTransactions = async () => {
   const { token } = await getLocalStorage("token");
   const { id } = await getLocalStorage("user");
@@ -20,23 +41,6 @@ export const getTransactions = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-};
-
-export const getMaxTransactions = async () => {
-  const { token } = await getLocalStorage("token");
-  const { id } = await getLocalStorage("user");
-  try {
-    const res = await axios.get(`api/transactions/get-max/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(res.data)
     return res.data;
   } catch (error) {
     console.log(error);

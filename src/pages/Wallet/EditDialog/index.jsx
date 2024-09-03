@@ -16,7 +16,7 @@ import { Button, Select, Stack, TextField } from "@mui/material";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { createTransaction } from "../../../services/api/transactions";
+import { updateTransaction } from "../../../services/api/transactions";
 
 const tags = [
   { value: "Trabajo", label: "Trabajo" },
@@ -66,9 +66,14 @@ const EditDialog = ({ open, close, update, transaction }) => {
 
   const onSubmit = async (data) => {
     const tr = { ...data, id: transaction.id };
-    update(tr);
-    console.log(tr)
-    handleClose();
+    const res = await updateTransaction(tr);
+    if (res.status === 201) {
+      console.log(res);
+      update(tr);
+      handleClose();
+    } else {
+      console.log(res);
+    }
   };
 
   const formatDate = (dateString) => {

@@ -6,6 +6,7 @@ import { getTransactions } from "../../services/api/transactions";
 import Template from "../../components/templates/Template";
 import CreateDialog from "./CreateDialog";
 import EditDialog from "./EditDialog";
+import ViewDialog from "./ViewDialog";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -36,6 +37,7 @@ const Wallet = () => {
 
   const [openCreate, setOpenCreate] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openView, setOpenView] = useState(false);
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
@@ -90,13 +92,28 @@ const Wallet = () => {
     setOpenEdit(false);
   };
 
+  const handleOpenView = (data) => {
+    setSelectedTransaction(data);
+    setOpenView(true);
+  };
+
+  const handleCloseView = () => {
+    setOpenView(false);
+  };
+
   const onUpdate = (updatedTransaction) => {
     const updatedTransactions = transactions.map((transaction) =>
       transaction.id === updatedTransaction.id
         ? updatedTransaction
         : transaction
     );
-    console.log(updatedTransactions);
+    setTransactions(updatedTransactions);
+  };
+
+  const onDelete = (deletedTransaction) => {
+    const updatedTransactions = transactions.filter(
+      (transaction) => transaction.id !== deletedTransaction.id
+    );
     setTransactions(updatedTransactions);
   };
 
@@ -238,7 +255,9 @@ const Wallet = () => {
                       </Tooltip>
 
                       <Tooltip title="Ver">
-                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200">
+                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-green-100 duration-200"
+                        onClick={() => handleOpenView(transaction)}
+                        >
                           <VisibilityOutlinedIcon fontSize="large" />
                         </button>
                       </Tooltip>
@@ -282,12 +301,17 @@ const Wallet = () => {
                         ${transaction.amount}
                       </span>
                       <Tooltip title="Editar">
-                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200">
+                        <button
+                          className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200"
+                          onClick={() => handleOpenEdit(transaction)}
+                        >
                           <EditIcon fontSize="medium" />
                         </button>
                       </Tooltip>
                       <Tooltip title="Ver">
-                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200">
+                        <button className="w-10 h-10 rounded-full flex justify-center items-center hover:bg-red-100 duration-200"
+                        onClick={() => handleOpenView(transaction)}
+                        >
                           <VisibilityOutlinedIcon fontSize="large" />
                         </button>
                       </Tooltip>
@@ -308,6 +332,14 @@ const Wallet = () => {
           update={onUpdate}
           transaction={selectedTransaction}
         />
+
+        <ViewDialog
+          open={openView}
+          close={handleCloseView}
+          transaction={selectedTransaction}
+          deleteData={onDelete}
+        />
+
       </Template>
     </>
   );
