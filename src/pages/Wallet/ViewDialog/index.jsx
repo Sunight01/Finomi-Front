@@ -9,6 +9,8 @@ import DialogTemplate from "../../../components/templates/DialogTemplate";
 
 import { deleteTransactionAPI } from "../../../services/api/transactions";
 
+import toast, { Toaster } from "react-hot-toast";
+
 const theme = createTheme({
   palette: {
     black: {
@@ -31,11 +33,18 @@ const ViewDialog = ({ open, close, deleteData, transaction }) => {
   };
 
   const handleDelete = async (data) => {
+    const deleteLading = toast.loading("Eliminando...");
     const res = await deleteTransactionAPI(data);
     if (res.status === 200) {
+      toast.success("Transacción eliminada exitosamente!", {
+        id: deleteLading,
+      });
       deleteData(data);
-      console.log("Eliminado con exito");
       close();
+    } else {
+      toast.error("Ha ocurrido un error al eliminar la transacción", {
+        id: deleteLading,
+      });
     }
   };
 
@@ -84,6 +93,7 @@ const ViewDialog = ({ open, close, deleteData, transaction }) => {
               </Stack>
             </ThemeProvider>
           </div>
+          <Toaster position="top-center" reverseOrder={false} />
         </DialogTemplate>
       )}
     </>

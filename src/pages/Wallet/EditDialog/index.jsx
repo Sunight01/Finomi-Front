@@ -18,6 +18,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { updateTransaction } from "../../../services/api/transactions";
 
+import toast, { Toaster } from "react-hot-toast";
+
 const tags = [
   { value: "Trabajo", label: "Trabajo" },
   { value: "Emprendimiento", label: "Emprendimiento" },
@@ -59,20 +61,24 @@ const EditDialog = ({ open, close, update, transaction }) => {
   const [visible, setVisible] = useState(false);
 
   const handleClose = () => {
-    console.log("handleClose");
     reset();
     close();
   };
 
   const onSubmit = async (data) => {
+    const updateLoading = toast.loading("Actualizando...");
     const tr = { ...data, id: transaction.id };
     const res = await updateTransaction(tr);
     if (res.status === 201) {
-      console.log(res);
+      toast.success("Transacción actualizada exitosamente!", {
+        id: updateLoading,
+      });
       update(tr);
       handleClose();
     } else {
-      console.log(res);
+      toast.error("Ha ocurrido un error al actualizar la transacción", {
+        id: updateLoading,
+      });
     }
   };
 
@@ -286,6 +292,7 @@ const EditDialog = ({ open, close, update, transaction }) => {
               </ThemeProvider>
             </form>
           </div>
+          <Toaster position="top-center" reverseOrder={false} />
         </DialogTemplate>
       )}
     </>

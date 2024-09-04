@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Tooltip from "@mui/material/Tooltip";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -24,13 +25,13 @@ const TransactionCard = ({
         </div>
 
         <div className="flex flex-row justify-center items-center gap-4">
-          <span className={`text-xl font-semibold text-${color}-600`}>
+          <span className={`text-xl font-semibold ${color === "green" ? "text-green-500" : color === "red" ? "text-red-500" : ""}`}>
             ${transaction.amount}
           </span>
 
           <Tooltip title="Editar">
             <button
-              className={`w-10 h-10 rounded-full flex justify-center items-center hover:bg-${color}-100 duration-200`}
+              className={`w-10 h-10 rounded-full flex justify-center items-center ${color === "green" ? "hover:bg-green-100" : color === "red" ? "hover:bg-red-100" : ""} duration-200`}
               onClick={() => handleOpenEdit(transaction)}
             >
               <EditIcon fontSize="medium" />
@@ -39,7 +40,7 @@ const TransactionCard = ({
 
           <Tooltip title="Ver">
             <button
-              className={`w-10 h-10 rounded-full flex justify-center items-center hover:bg-${color}-100 duration-200`}
+              className={`w-10 h-10 rounded-full flex justify-center items-center ${color === "green" ? "hover:bg-green-100" : color === "red" ? "hover:bg-red-100" : ""} duration-200`}
               onClick={() => handleOpenView(transaction)}
             >
               <VisibilityOutlinedIcon fontSize="large" />

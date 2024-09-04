@@ -28,7 +28,7 @@ export const loginAPI = async (data) => {
     const res = await axios.post(`/api/auth/login`, data);
     return res.data;
   } catch (error) {
-    console.log(error);
+    return error.response.data;
   }
 };
 
@@ -37,8 +37,7 @@ export const registerAPI = async (data) => {
     const res = await axios.post(`/api/auth/register`, data);
     return res.data;
   } catch (error) {
-    console.log(error);
-    return error;
+    return error.response.data;
   }
 };
 

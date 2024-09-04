@@ -18,6 +18,8 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 
+import toast, { Toaster } from "react-hot-toast";
+
 const Wallet = () => {
   const months = [
     "Enero",
@@ -223,7 +225,8 @@ const Wallet = () => {
                   .filter((transaction) => transaction.type === "Ingreso")
                   .map((transaction) => (
                     <TransactionCard
-                    transaction={transaction}
+                      key={transaction.id}
+                      transaction={transaction}
                       handleOpenEdit={handleOpenEdit}
                       handleOpenView={handleOpenView}
                       color="green"
@@ -249,6 +252,7 @@ const Wallet = () => {
                   .filter((transaction) => transaction.type === "Gasto")
                   .map((transaction) => (
                     <TransactionCard
+                      key={transaction.id}
                       transaction={transaction}
                       handleOpenEdit={handleOpenEdit}
                       handleOpenView={handleOpenView}
@@ -278,6 +282,7 @@ const Wallet = () => {
           transaction={selectedTransaction}
           deleteData={onDelete}
         />
+        <Toaster position="top-center" reverseOrder={false} />
       </Template>
     </>
   );

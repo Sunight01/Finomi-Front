@@ -18,6 +18,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { createTransaction } from "../../../services/api/transactions";
 
+import toast, { Toaster } from "react-hot-toast";
+
 const tags = [
   { value: "Trabajo", label: "Trabajo" },
   { value: "Emprendimiento", label: "Emprendimiento" },
@@ -62,11 +64,21 @@ const CreateDialog = ({ open, close, add }) => {
     reset();
     close();
   };
-  
+
   const onSubmit = async (data) => {
+    const createLoading = toast.loading("Creando...");
     const res = await createTransaction(data);
-    add(res.response);
-    handleClose();
+    if (res.status === 200) {
+      toast.success("Transacción creada exitosamente!", {
+        id: createLoading,
+      });
+      add(res.response);
+      handleClose();
+    } else {
+      toast.error("Ha ocurrido un error al crear la transacción", {
+        id: createLoading,
+      });
+    }
   };
 
   useEffect(() => {
@@ -262,6 +274,7 @@ const CreateDialog = ({ open, close, add }) => {
               </ThemeProvider>
             </form>
           </div>
+          <Toaster position="top-center" reverseOrder={false} />
         </DialogTemplate>
       )}
     </>

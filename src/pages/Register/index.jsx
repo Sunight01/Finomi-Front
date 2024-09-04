@@ -1,4 +1,3 @@
- 
 /* eslint-disable no-unused-vars */
 import { useForm, Controller, set } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -14,14 +13,17 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { registerAPI, verifyUserAPI } from "../../services/api/auth";
-import { getLocalStorage, setLocalStorage } from "../../functions/localStorage";
+import { registerAPI } from "../../services/api/auth";
+import { setLocalStorage } from "../../functions/localStorage";
+
+import toast, { Toaster } from "react-hot-toast";
 
 const theme = createTheme({
   palette: {
@@ -47,7 +49,9 @@ const Register = () => {
     },
   });
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate()
+  const [apiError, setApiError] = useState();
+
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -56,23 +60,46 @@ const Register = () => {
   };
 
   const onSubmit = async (data) => {
+    const loginLoading = toast.loading("Ingresando...");
     const res = await registerAPI(data);
-    setLocalStorage("user", {id: res.response.id, username: res.response.username, email: res.response.email});
-    setLocalStorage("token", {token: res.response.token});
     if (res.status === 200) {
+      toast.success("Ingreso exitoso!", {
+        id: loginLoading,
+      });
+      setLocalStorage("user", {
+        id: res.response.id,
+        username: res.response.username,
+        email: res.response.email,
+      });
+      setLocalStorage("token", { token: res.response.token });
       navigate("/dashboard");
+    } else {
+      toast.error("Ha ocurrido un error al ingresar", {
+        id: loginLoading,
+      });
+      if (res.response === "User already registered") {
+        setApiError("Usuario ya registrado");
+      }
     }
   };
 
   return (
     <>
       <LoginTemplate>
-        <div className="login-header mb-6">
+        <div className="login-header mb-4">
           <h1 className="text-3xl font-bold font-sans mb-5">Registrate!</h1>
           <p className="text-gray-500 text-lg">
             Ingresa un nombre, correo y contraseña para crear tu cuenta.
           </p>
         </div>
+        {apiError && (
+          <div className="my-4 bg-red-400 text-white p-2 rounded flex flex-row justify-between items-center">
+            <p className="text-md">{apiError}</p>
+            <button className="text-white" onClick={() => setApiError(null)}>
+              <CloseIcon fontSize="medium" />
+            </button>
+          </div>
+        )}
         <div className="login-form">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="login-form-input mb-4">
@@ -220,6 +247,7 @@ const Register = () => {
             </div>
           </form>
         </div>
+        <Toaster position="top-center" reverseOrder={false} />
       </LoginTemplate>
     </>
   );

@@ -12,13 +12,16 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { loginAPI, verifyUserAPI } from "../../services/api/auth";
-import { getLocalStorage, setLocalStorage } from "../../functions/localStorage";
+import { loginAPI } from "../../services/api/auth";
+import { setLocalStorage } from "../../functions/localStorage";
+
+import toast, { Toaster } from "react-hot-toast";
 
 const theme = createTheme({
   palette: {
@@ -38,7 +41,8 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate()
+  const [apiError, setApiError] = useState();
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -47,24 +51,46 @@ const Login = () => {
   };
 
   const onSubmit = async (data) => {
+    const loginLoading = toast.loading("Ingresando...");
     const res = await loginAPI(data);
-    console.log(res.data)
-    setLocalStorage("user", {id: res.response.id, username: res.response.username, email: res.response.email});
-    setLocalStorage("token", {token: res.response.token});
     if (res.status === 200) {
+      toast.success("Ingreso exitoso!", {
+        id: loginLoading,
+      });
+      setLocalStorage("user", {
+        id: res.response.id,
+        username: res.response.username,
+        email: res.response.email,
+      });
+      setLocalStorage("token", { token: res.response.token });
       navigate("/dashboard");
+    } else {
+      toast.error("Ha ocurrido un error al ingresar", {
+        id: loginLoading,
+      });
+      if (res.response === "Invalid login credentials") {
+        setApiError("Correo o contraseña incorrectos");
+      }
     }
   };
 
   return (
     <>
       <LoginTemplate>
-        <div className="login-header mb-6">
-          <h1 className="text-3xl font-bold font-sans mb-5">Bienvenido!</h1>
+        <div className="login-header mb-2">
+          <h1 className="text-3xl font-bold font-sans mb-4">Bienvenido!</h1>
           <p className="text-gray-500 text-lg">
             Ingresa tu correo y contraseña para ingresar a tu cuenta.
           </p>
         </div>
+        {apiError && (
+          <div className="my-4 bg-red-400 text-white p-2 rounded flex flex-row justify-between items-center">
+            <p className="text-md">{apiError}</p>
+            <button className="text-white" onClick={() => setApiError(null)}>
+              <CloseIcon fontSize="medium" />
+            </button>
+          </div>
+        )}
         <div className="login-form">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="login-form-input mb-4">
@@ -173,6 +199,7 @@ const Login = () => {
             </div>
           </form>
         </div>
+        <Toaster position="top-center" reverseOrder={false} />
       </LoginTemplate>
     </>
   );
