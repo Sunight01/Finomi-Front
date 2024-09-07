@@ -191,7 +191,7 @@ const Login = () => {
             <div className="form-button mt-4">
               <ThemeProvider theme={theme}>
                 <Stack spacing={0} direction="row">
-                  <Button type="onSubmit" variant="contained" color="black">
+                  <Button id="login-button" type="onSubmit" variant="contained" color="black">
                     Ingresar
                   </Button>
                 </Stack>
