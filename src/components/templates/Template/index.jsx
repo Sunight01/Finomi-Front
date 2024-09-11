@@ -64,15 +64,18 @@ const Template = (props) => {
           <MenuNavbar />
           <UserMenu />
         </aside>
-        <div className="bg-white min-h-auto w-full md:my-8 mr-8 sm:my-4 rounded-3xl border-gray-200 overflow-hidden border-box ml-24">
+        <div className="bg-white w-full md:my-8 mr-8 sm:my-4 rounded-3xl border-gray-200 flex flex-col flex-grow overflow-hidden border-box ml-24">
           <header className="bg-super-light-gray min-h-28 py-4 px-8">
-            <h1 className="sm:text-2xl mbm:text-4xl font-semibold">Bienvenido, {user}!</h1>
-            <p className="sm:text-xl mbm:text-2xl font-medium">{months[currentDate.getMonth()]}, {currentDate.getFullYear()}</p>
+            <h1 className="sm:text-2xl mbm:text-4xl font-semibold">
+              Bienvenido, {user}!
+            </h1>
+            <p className="sm:text-xl mbm:text-2xl font-medium">
+              {months[currentDate.getMonth()]}, {currentDate.getFullYear()}
+            </p>
           </header>
-          <div className="h-full w-full">
+          <div className="flex-grow w-full">
             {props.children}
           </div>
-
         </div>
       </div>
     </>

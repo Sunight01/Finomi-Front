@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useForm, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import LoginTemplate from "../../components/templates/LoginTemplate";
 

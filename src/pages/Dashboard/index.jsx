@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 
 import Template from "../../components/templates/Template";
+import { ChatMessage } from "../../components/Finomi/Chat/ChatMessage";
 
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 
 import { getTransactions } from "../../services/api/transactions";
+import { getChatAPI } from "../../services/api/chat";
 
 const Dashboard = () => {
   const [totalIngresos, setTotalIngresos] = useState(0);
   const [totalGastos, setTotalGastos] = useState(0);
   const [beneficio, setBeneficio] = useState(0);
+  const [iAdvice, setIAdvice] = useState("");
 
   const [mayorIngreso, setMayorIngreso] = useState({});
   const [mayorGasto, setMayorGasto] = useState({});
@@ -77,7 +80,17 @@ const Dashboard = () => {
         maxTransactions(res.response);
       }
     };
+
+    const callIAdvice = async () => {
+      const res = await getChatAPI();
+
+      if (res.status === 200) {
+        setIAdvice(res.response[0].messages[2].content);
+      }
+    };
+
     callMaxTransactions();
+    callIAdvice();
   }, []);
 
   return (
@@ -139,33 +152,7 @@ const Dashboard = () => {
           <h2 className="text-xl sm:max-md:text-lg font-semibold sm:max-md:text-center mb-2">
             Ultimo consejo
           </h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-            praesentium eius totam vero ipsa tenetur dolores incidunt! Sint
-            beatae, itaque voluptates laudantium alias aliquam unde. Modi at
-            deserunt illo eaque? lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Accusamus praesentium eius totam vero ipsa tenetur
-            dolores incidunt! Sint beatae, itaque voluptates laudantium alias
-            aliquam unde. Modi at deserunt illo eaque? Lorem ipsum dolor, sit
-            amet consectetur adipisicing elit. Unde ipsa, ullam itaque tempore
-            omnis at commodi amet delectus quae, distinctio reprehenderit
-            repudiandae accusantium numquam, animi sequi perspiciatis rerum
-            maiores rem? Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Impedit, cum? Expedita quisquam nobis incidunt a dolores,
-            dolorum aut placeat voluptate sint sed. Totam praesentium nemo odit
-            amet quisquam facilis quo. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Corrupti delectus repudiandae earum dolores nemo
-            necessitatibus inventore, eius, fuga laudantium illo error
-            temporibus quaerat nobis fugit odit, id velit commodi! Qui! lorem
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-            ipsam beatae eos animi reiciendis a nesciunt, quaerat, sequi nostrum
-            optio officiis impedit accusamus nam cumque unde sapiente eius
-            ratione veritatis! Lorem ipsum dolor, sit amet consectetur
-            adipisicing elit. Debitis nobis nam ullam, voluptatem dolorum fugit
-            non maxime nesciunt! Doloremque id sint nam impedit esse sit quia
-            explicabo dolore eos tenetur! Lorem ipsum, dolor sit amet
-            consectetur adipisicing elit. Accusantium autem voluptates est dicta{" "}
-          </p>
+          <ChatMessage user="assistant" message={iAdvice} />
         </div>
       </Template>
     </>
