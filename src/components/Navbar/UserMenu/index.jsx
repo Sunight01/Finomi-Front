@@ -17,14 +17,17 @@ const UserMenu = () => {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
+  // Función para abrir el menú
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Funcion para cerrar el menú
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  // Función para cerrar sesión
   const handleLogout = async () => {
     const res = await logoutAPI();
     if (res.status === 200) {

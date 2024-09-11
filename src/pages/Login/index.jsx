@@ -23,6 +23,7 @@ import { setLocalStorage } from "../../functions/localStorage";
 
 import toast, { Toaster } from "react-hot-toast";
 
+// Función para crear un tema para el botón de MUI
 const theme = createTheme({
   palette: {
     black: {
@@ -44,12 +45,15 @@ const Login = () => {
   const [apiError, setApiError] = useState();
   const navigate = useNavigate();
 
+  // Función para alternar el estado del campo de contraseña para ser visible o no
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  // Función para evitar que el botón de mostrar contraseña haga eventos indeseados
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  // Función para enviar los datos al servidor para hacer el login
   const onSubmit = async (data) => {
     const loginLoading = toast.loading("Ingresando...");
     const res = await loginAPI(data);

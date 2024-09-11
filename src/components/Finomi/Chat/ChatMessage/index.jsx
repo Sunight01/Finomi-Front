@@ -22,7 +22,7 @@ const ChatMessage = ({ user, message }) => {
       </span>
       <div
         className="text-gray-800"
-        dangerouslySetInnerHTML={formatMessageContent(message)} // Uso correcto aquí
+        dangerouslySetInnerHTML={formatMessageContent(message)} // El mensaje se transforma en HTML
       />
     </div>
   );

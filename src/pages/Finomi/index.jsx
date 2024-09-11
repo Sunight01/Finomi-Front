@@ -10,6 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 const Finomi = () => {
   const [activeButton, setActiveButton] = useState("Analisis IA");
 
+  // Funcion para dejar un botón con un estilo en especifico.
   const handleClick = (button) => {
     setActiveButton(button);
   };

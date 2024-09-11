@@ -1,3 +1,4 @@
+// Funciones para manejar el storage local
 export const setLocalStorage = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -6,6 +7,7 @@ export const setLocalStorage = (key, value) => {
   }
 };
 
+// Función para obtener el valor del storage local
 export const getLocalStorage = (key) => {
   try {
     const value = localStorage.getItem(key);
@@ -15,6 +17,7 @@ export const getLocalStorage = (key) => {
   }
 };
 
+// Funcion para borrar el valor del storage local
 export const removeLocalStorage = (key) => {
   try {
     localStorage.removeItem(key);

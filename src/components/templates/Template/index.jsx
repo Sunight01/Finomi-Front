@@ -30,12 +30,14 @@ const Template = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Funcion para limpiar el storage de la sesión
     const clearStorage = () => {
       removeLocalStorage("user");
       removeLocalStorage("token");
       navigate("/");
     };
 
+    // Funcion para verificar la sesion del usuario.
     const verif = async () => {
       const ls = getLocalStorage("user");
       const ls_t = getLocalStorage("token");

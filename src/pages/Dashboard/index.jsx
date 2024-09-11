@@ -19,8 +19,10 @@ const Dashboard = () => {
   const [mayorIngreso, setMayorIngreso] = useState({});
   const [mayorGasto, setMayorGasto] = useState({});
   
+  // OBtenemos la fecha actual
   const currentDate = new Date();
 
+  // Función para calcular los ingresos y los gastos más altos
   const maxTransactions = (data) => {
 
     const filterTransactionsByMonth = (transactions, date) => {
@@ -38,6 +40,7 @@ const Dashboard = () => {
       currentDate
     );
 
+    // Encontrar el mayor ingreso
     const maxIngreso = filteredTransactions
       .filter((transaction) => transaction.type === "Ingreso")
       .reduce(
@@ -53,6 +56,7 @@ const Dashboard = () => {
         {}
       );
 
+    // Suma todos los ingresos
     const totalIngresos = filteredTransactions
       .filter((transaction) => transaction.type === "Ingreso")
       .reduce((total, transaction) => total + parseInt(transaction.amount), 0);
@@ -73,6 +77,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    // Función para obtener todos los datos financieros del usuario
     const callMaxTransactions = async () => {
       const res = await getTransactions();
 
@@ -81,6 +86,7 @@ const Dashboard = () => {
       }
     };
 
+    // Función para obtener el último consejo del usuario
     const callIAdvice = async () => {
       const res = await getChatAPI();
 

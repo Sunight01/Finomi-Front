@@ -14,13 +14,14 @@ const ChatIA = () => {
   ]);
   const [newMessage, setNewMessage] = useState(""); // Estado para el mensaje del usuario
 
+  // Funcion para manejar los mensajes del chat en la BD.
   const handleSaveMessages = async (updatedMessages) => {
     try {
       const getRes = await getChatAPI();
       if (getRes.status === 200) {
-        if (getRes.response.length === 0) {
+        if (getRes.response.length === 0) { // Esto quiere decir que no hay mensajes en la BD
           await saveMessagesAPI(updatedMessages);
-        } else {
+        } else { // Si hay mensajes, que se actualicen a medida que se envían.
           handleUpdateMessages(updatedMessages);
         }
       }
@@ -29,10 +30,10 @@ const ChatIA = () => {
     }
   };
 
+  // Función para enviar los mensajes a la IA y actualizar el estado
   const sendMessages = async (updatedMessages) => {
     try {
       const res = await sendMessageAPI(updatedMessages);
-      console.log(res);
       setMessages((prevMessages) => [...prevMessages, res.response.message]); // Añade la respuesta de la IA
       const upMessages = [...updatedMessages, res.response.message];
       handleSaveMessages(upMessages);
@@ -41,6 +42,7 @@ const ChatIA = () => {
     }
   };
 
+  // Funcion para actualizar los mensajes en la BD
   const handleUpdateMessages = async (updatedMessages) => {
     try {
       const res = await updateMessagesAPI(updatedMessages);
@@ -50,6 +52,7 @@ const ChatIA = () => {
     }
   };
 
+  // Función para guardar el mensaje que el user escribió, enviarlo a la IA y actualizar el estado con su respuesta.
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "") {
       const tempMessage = { role: "user", content: newMessage }; // Guarda el mensaje en una variable temporal
@@ -64,7 +67,7 @@ const ChatIA = () => {
     }
   };
 
-  // Funcion para manejar la tecla de enter
+  // Funcion para manejar la tecla de enter. Con esto el usuario puede enviar el mensaje con el enter.
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault(); // Evita que se agregue una nueva línea en el input
@@ -73,6 +76,7 @@ const ChatIA = () => {
   };
 
   useEffect(() => {
+    // Función para obtener los mensajes del chat del usuario y actualizar el estado en caso de que exista el chat en la BD.
     const getUserChat = async () => {
       const res = await getChatAPI();
       if (res.status === 200) {

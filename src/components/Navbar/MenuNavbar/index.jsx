@@ -15,9 +15,12 @@ const MenuNavbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  // Función para abrir el menú
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  // Funcion para cerrar el menú
   const handleClose = () => {
     setAnchorEl(null);
   };

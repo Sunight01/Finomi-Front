@@ -10,6 +10,7 @@ import { getChatAPI, sendMessageAPI, deleteMessageAPI, saveMessagesAPI } from ".
 
 import toast, { Toaster } from "react-hot-toast";
 
+// Colores para el Botón de MUI
 const theme = createTheme({
   palette: {
     black: {
@@ -26,6 +27,7 @@ const Analysis = () => {
     { role: "assistant", content: "No tienes mensajes" },
   ]);
 
+  // Función para generar el análisis cuando se presiona el botón
   const generateAnalysis = async () => {
     const loginLoading = toast.loading("Generando análisis...");
     const res = await getTransactions();
@@ -48,6 +50,7 @@ const Analysis = () => {
     }
   }
 
+  // Función para obtener los mensajes del chat del usuario y actualizar el estado
   const getMessages = async () => {
     try {
       const res = await getChatAPI();

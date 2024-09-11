@@ -7,7 +7,8 @@ const LoginTemplate = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const verif = async () => {
+    // Funcion para verificar si existe un usuario en el storage
+    const verif = () => {
       const ls = getLocalStorage("user");
       const ls_t = getLocalStorage("token");
 

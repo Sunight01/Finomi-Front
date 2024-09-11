@@ -11,6 +11,7 @@ const TransactionCard = ({
   color
 }) => {
   if (!transaction) return null;
+  // Componente para hacer un card en donde se aparecerá cada dato financiero.
   return (
     <>
       <div
