@@ -53,12 +53,15 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  // Funcion para mostrar o ocultar la contraseña
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  // Función para que el "ojo" no haga eventos inesperados.
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  // Función para enviar los datos al servidor para hacer el registro.
   const onSubmit = async (data) => {
     const loginLoading = toast.loading("Ingresando...");
     const res = await registerAPI(data);

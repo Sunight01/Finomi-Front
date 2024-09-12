@@ -27,7 +27,7 @@ export default {
       },
       screens: {
         sm: '320px',
-        mbm: '425px'
+        mbm: '426px'
       },
       fontFamily:{
         'inter': ['Inter', 'sans-serif']

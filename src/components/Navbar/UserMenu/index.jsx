@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { logoutAPI } from "../../../services/api/auth";
+import { getLocalStorage } from "../../../functions/localStorage";
 
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -14,6 +15,8 @@ import Divider from '@mui/material/Divider';
 
 const UserMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
@@ -38,7 +41,14 @@ const UserMenu = () => {
     }
 
   }
-
+  useEffect(() => {
+    const callUser = () => {
+      const { username, email } = getLocalStorage('user');
+      setUsername(username);
+      setEmail(email);
+    };
+    callUser();
+  }, []);
   return (
     <>
       <div className="flex justify-center items-center">
@@ -77,8 +87,8 @@ const UserMenu = () => {
           <div className="flex justify-between items-center ml-4">
             <PersonOutlineIcon />
             <div className="flex flex-col ml-4 mr-4 mb-2">
-              <span>user</span>
-              <span>email@email.com</span>
+              <span>{username}</span>
+              <span>{email}</span>
             </div>
           </div>
           <Divider />

@@ -26,12 +26,14 @@ const ViewDialog = ({ open, close, deleteData, transaction }) => {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState({});
 
+  // Función para formatear la fecha de la transacción proveniente de la API
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
     return date.toISOString().split("T")[0]; // Esto dará el formato "yyyy-MM-dd"
   };
 
+  // Funcion para eliminar la transacción seleccionada
   const handleDelete = async (data) => {
     const deleteLading = toast.loading("Eliminando...");
     const res = await deleteTransactionAPI(data);
@@ -48,6 +50,7 @@ const ViewDialog = ({ open, close, deleteData, transaction }) => {
     }
   };
 
+  // Función para cerrar el modal
   const handleClose = () => {
     close();
   };

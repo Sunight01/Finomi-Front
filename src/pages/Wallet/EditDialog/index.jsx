@@ -60,11 +60,13 @@ const EditDialog = ({ open, close, update, transaction }) => {
 
   const [visible, setVisible] = useState(false);
 
+  // Funcion para cerrar el modal y resetear el formulario
   const handleClose = () => {
     reset();
     close();
   };
 
+  // Funcion para enviar los datos al servidor para actualizar la transacción
   const onSubmit = async (data) => {
     const updateLoading = toast.loading("Actualizando...");
     const tr = { ...data, id: transaction.id };
@@ -82,6 +84,7 @@ const EditDialog = ({ open, close, update, transaction }) => {
     }
   };
 
+  // Función para formatear la fecha de la transacción proveniente de la API
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -89,6 +92,7 @@ const EditDialog = ({ open, close, update, transaction }) => {
   };
 
   useEffect(() => {
+    // Si se envía una transacción, se resetea el formulario con sus datos
     if (transaction) {
       reset({
         user_id: id,

@@ -44,6 +44,7 @@ const Wallet = () => {
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
+  // Funcion para cononcer el mes actual
   const isCurrentMonth = (date) => {
     const now = new Date();
     return (
@@ -52,6 +53,7 @@ const Wallet = () => {
     );
   };
 
+  // Funcion para desactivar los meses pasados con una diferencia de dos meses al actual
   const disablePastMonths = (date) => {
     const now = new Date();
     if (date.getFullYear() === now.getFullYear()) {
@@ -62,6 +64,7 @@ const Wallet = () => {
     }
   };
 
+  // Funcion para obtener el mes siguiente
   const handleNextMonth = () => {
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -70,6 +73,7 @@ const Wallet = () => {
     });
   };
 
+  // Funcion para obtener el mes anterior
   const handleMinusMonth = () => {
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -78,32 +82,39 @@ const Wallet = () => {
     });
   };
 
+  // Funcion para abrir el Dialog de creación de transacciones
   const handleOpenCreate = () => {
     setOpenCreate(true);
   };
 
+  // Funcion para cerrar el Dialog de creación de transacciones
   const handleCloseCreate = () => {
     setOpenCreate(false);
   };
 
+  // Funcion para abrir el Dialog de edición de transacciones
   const handleOpenEdit = (data) => {
     setSelectedTransaction(data);
     setOpenEdit(true);
   };
 
+  // Funcion para cerrar el Dialog de edición de transacciones
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
 
+  // Funcion para abrir el Dialog de visualización de transacciones
   const handleOpenView = (data) => {
     setSelectedTransaction(data);
     setOpenView(true);
   };
 
+  // Funcion para cerrar el Dialog de visualización de transacciones
   const handleCloseView = () => {
     setOpenView(false);
   };
 
+  // Función para actualizar la transacción seleccionada y actualizar el estado de la lista de transacciones
   const onUpdate = (updatedTransaction) => {
     const updatedTransactions = transactions.map((transaction) =>
       transaction.id === updatedTransaction.id
@@ -113,6 +124,7 @@ const Wallet = () => {
     setTransactions(updatedTransactions);
   };
 
+  // Función para eliminar la transacción seleccionada y actualizar el estado de la lista de transacciones
   const onDelete = (deletedTransaction) => {
     const updatedTransactions = transactions.filter(
       (transaction) => transaction.id !== deletedTransaction.id
@@ -120,10 +132,12 @@ const Wallet = () => {
     setTransactions(updatedTransactions);
   };
 
+  // Función para setear la lista de transacciones del usuario
   const getUserTransactions = async (data) => {
     setTransactions(data);
   };
 
+  // Función para agregar una nueva transacción al estado de la lista de transacciones
   const addTransaction = (newTransaction) => {
     setTransactions((prevTransactions) => [
       ...prevTransactions,
@@ -131,6 +145,7 @@ const Wallet = () => {
     ]);
   };
 
+  // Función para filtrar las transacciones por mes
   const filterTransactionsByMonth = (transactions, date) => {
     return transactions.filter((transaction) => {
       const transactionDate = new Date(transaction.date);
@@ -141,12 +156,14 @@ const Wallet = () => {
     });
   };
 
+  // Variable en donde están las transacciones filtradas por mes
   const filteredTransactions = filterTransactionsByMonth(
     transactions,
     currentDate
   );
 
   useEffect(() => {
+    // Funcion para obtener todas las transacciones del usuario
     const callTransactions = async () => {
       const res = await getTransactions();
       if (res.status === 200) {

@@ -60,11 +60,13 @@ const CreateDialog = ({ open, close, add }) => {
 
   const [visible, setVisible] = useState(false);
 
+  // Función para cerrar y resetear el formulario
   const handleClose = () => {
     reset();
     close();
   };
 
+  // Función para enviar los datos al servidor para crear la transacción
   const onSubmit = async (data) => {
     const createLoading = toast.loading("Creando...");
     const res = await createTransaction(data);

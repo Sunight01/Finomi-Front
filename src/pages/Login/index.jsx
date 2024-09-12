@@ -81,10 +81,10 @@ const Login = () => {
   return (
     <>
       <LoginTemplate>
-        <div className="login-header mb-2">
-          <h1 className="text-3xl font-bold font-sans mb-4">Bienvenido!</h1>
-          <p className="text-gray-500 text-lg">
-            Ingresa tu correo y contraseña para ingresar a tu cuenta.
+        <div className="login-header mb-10 flex flex-col items-center gap-2">
+          <h1 className="text-3xl font-bold font-sans text-center">Bienvenido a Finomi</h1>
+          <p className="text-gray-500 text-lg text-center">
+            Tu espacio personal para gestionar tus ingresos y gastos.
           </p>
         </div>
         {apiError && (

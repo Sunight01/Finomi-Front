@@ -1,6 +1,7 @@
 import axios from '../axiosConfig';
 import { getLocalStorage } from '../../functions/localStorage';
 
+// Función que verifica si el usuario está autenticado
 export const verifyUserAPI = async () => {
   const { token } = await getLocalStorage('token');
   try {
@@ -23,6 +24,7 @@ export const verifyUserAPI = async () => {
   }
 }
 
+// Función para iniciar sesion en la API
 export const loginAPI = async (data) => {
   try {
     const res = await axios.post(`/api/auth/login`, data);
@@ -32,6 +34,7 @@ export const loginAPI = async (data) => {
   }
 };
 
+// Funcion para registrar un usuario en la API
 export const registerAPI = async (data) => {
   try {
     const res = await axios.post(`/api/auth/register`, data);
@@ -41,6 +44,7 @@ export const registerAPI = async (data) => {
   }
 };
 
+// Función para cerrar sesión en la API
 export const logoutAPI = async () => {
   const { token } = await getLocalStorage('token');
   try {

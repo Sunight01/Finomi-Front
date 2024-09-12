@@ -1,6 +1,7 @@
 import axios from "../axiosConfig";
 import { getLocalStorage } from "../../functions/localStorage";
 
+// Funcion para obtener los mensajes del chat del usuario
 export const getChatAPI = async () => {
   const { token } = await getLocalStorage("token");
   const { id } = await getLocalStorage("user");
@@ -18,6 +19,7 @@ export const getChatAPI = async () => {
   }
 };
 
+// Funcion para enviar un mensaje a la IA.
 export const sendMessageAPI = async (userMessage) => {
   const { token } = await getLocalStorage("token");
   try {
@@ -35,6 +37,7 @@ export const sendMessageAPI = async (userMessage) => {
   }
 };
 
+// Funcion para almacenar los mensajes del chat del usuario
 export const saveMessagesAPI = async (messages) => {
   const { token } = await getLocalStorage("token");
   const { id } = await getLocalStorage("user");
@@ -52,6 +55,7 @@ export const saveMessagesAPI = async (messages) => {
   }
 };
 
+// Funcion para actualizar los mensajes del chat del usuario
 export const updateMessagesAPI = async (messages) => {
   const { token } = await getLocalStorage("token");
   const { id } = await getLocalStorage("user");
@@ -69,6 +73,7 @@ export const updateMessagesAPI = async (messages) => {
   }
 };
 
+// funcion para eliminar los mensajes del chat del usuario
 export const deleteMessageAPI = async () => {
   const { token } = await getLocalStorage("token");
   const { id } = await getLocalStorage("user");
