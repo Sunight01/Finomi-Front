@@ -74,7 +74,9 @@ const Template = (props) => {
               {months[currentDate.getMonth()]}, {currentDate.getFullYear()}
             </p>
           </header>
-          <div className="flex-grow w-full">{props.children}</div>
+          <div className="flex-grow w-full">
+            {props.children}
+          </div>
         </div>
       </div>
       <UnauthDialog unauth={unauth} />
