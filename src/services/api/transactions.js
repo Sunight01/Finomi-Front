@@ -28,7 +28,7 @@ export const createTransaction = async (data) => {
     });
     return res.data;
   } catch (error) {
-    unauth401(error);
+    return unauth401(error);
   }
 };
 
@@ -43,7 +43,7 @@ export const updateTransaction = async (data) => {
     });
     return res.data;
   } catch (error) {
-    unauth401(error);
+    return unauth401(error);
   }
 };
 
@@ -59,7 +59,7 @@ export const deleteTransactionAPI = async (data) => {
     });
     return res.data;
   } catch (error) {
-    unauth401(error);
+    return unauth401(error);
   }
 };
 
@@ -73,8 +73,9 @@ export const getTransactions = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(res)
     return res.data;
   } catch (error) {
-    unauth401(error);
+    return unauth401(error);
   }
 };
