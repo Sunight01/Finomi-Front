@@ -61,7 +61,7 @@ const Template = (props) => {
   }, []);
   return (
     <>
-      <div className="min-h-screen w-full bg-main-white flex flex-col border-box">
+      <div className="flex min-h-screen w-full bg-main-white flex border-box">
         <nav className="block mbm:hidden rounded-b-xl flex flex-row justify-between items-center w-full h-16 px-8 py-10 shadow-lg fixed bg-main-white border-box">
           <UserMenu />
           <MenuNavbar />
@@ -70,12 +70,12 @@ const Template = (props) => {
           <MenuNavbar />
           <UserMenu />
         </aside>
-        <div className="bg-white w-full md:my-8 mbm:mr-8 sm:my-2 rounded-3xl border-gray-200 flex flex-col flex-grow overflow-hidden border-box mbm:ml-24 sm:max-mbm:mt-24">
+        <div className="bg-white w-full lg:my-8 mbm:mr-8 sm:my-4 rounded-3xl border-gray-200 flex flex-col flex-grow overflow-hidden border-box mbm:ml-24 sm:max-mbm:mt-24">
           <header className="bg-super-light-gray min-h-28 py-4 px-8">
-            <h1 className="sm:text-3xl mbm:text-4xl font-semibold">
+            <h1 className="sm:text-2xl mbm:text-4xl font-semibold">
               Bienvenido, {user}!
             </h1>
-            <p className="sm:text-2xl mbm:text-2xl font-medium">
+            <p className="sm:text-xl mbm:text-2xl font-medium">
               {months[currentDate.getMonth()]}, {currentDate.getFullYear()}
             </p>
           </header>
