@@ -2,16 +2,15 @@
 import UserMenu from "../../Navbar/UserMenu";
 import MenuNavbar from "../../Navbar/MenuNavbar";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import {
-  getLocalStorage,
-  removeLocalStorage,
-} from "../../../functions/localStorage";
+import UnauthDialog from "../../templates/UnauthDialog";
+
+import { getLocalStorage } from "../../../functions/localStorage";
 import { verifyUserAPI } from "../../../services/api/auth";
 
 const Template = (props) => {
   const [user, setUser] = useState("user");
+  const [unauth, setUnauth] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
   const months = [
     "Enero",
@@ -27,34 +26,31 @@ const Template = (props) => {
     "Noviembre",
     "Diciembre",
   ];
-  const navigate = useNavigate();
 
   useEffect(() => {
-    // Funcion para limpiar el storage de la sesión
-    const clearStorage = () => {
-      removeLocalStorage("user");
-      removeLocalStorage("token");
-      navigate("/");
-    };
-
     // Funcion para verificar la sesion del usuario.
     const verif = async () => {
       const ls = getLocalStorage("user");
       const ls_t = getLocalStorage("token");
 
-      const { username } = ls;
-
       if (ls === null || ls_t === null) {
-        clearStorage();
+        setUnauth(true);
         return;
       }
 
       const res = await verifyUserAPI();
+      console.log(res);
       if (res.status === 401) {
-        clearStorage();
+        if (res.message === "No tienes permisos para acceder a esta página") {
+          setUnauth(true);
+          return;
+        }
       }
 
-      setUser(username);
+      if (ls) {
+        const { username } = ls;
+        setUser(username);
+      }
     };
 
     verif();
@@ -82,6 +78,7 @@ const Template = (props) => {
           <div className="flex-grow w-full">{props.children}</div>
         </div>
       </div>
+      <UnauthDialog unauth={unauth} />
     </>
   );
 };

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { getTransactions } from "../../services/api/transactions";
 
@@ -19,6 +20,8 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 
 import { Toaster } from "react-hot-toast";
+
+import { removeLocalStorage } from "../../functions/localStorage";
 
 const Wallet = () => {
   const months = [
@@ -43,6 +46,7 @@ const Wallet = () => {
   const [openView, setOpenView] = useState(false);
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const navigate = useNavigate();
 
   // Funcion para cononcer el mes actual
   const isCurrentMonth = (date) => {
@@ -169,6 +173,12 @@ const Wallet = () => {
       if (res.status === 200) {
         if (transactions.length === 0) {
           getUserTransactions(res.response);
+        }
+      } else {
+        if (res.status === 401) {
+          removeLocalStorage("user");
+          removeLocalStorage("token");
+          navigate("/");
         }
       }
     };
