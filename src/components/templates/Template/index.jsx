@@ -39,11 +39,10 @@ const Template = (props) => {
       }
 
       const res = await verifyUserAPI();
-      console.log(res);
       if (res.status === 401) {
         if (res.message === "No tienes permisos para acceder a esta página") {
           setUnauth(true);
-          return;
+          console.log(unauth);
         }
       }
 
@@ -54,7 +53,7 @@ const Template = (props) => {
     };
 
     verif();
-  }, []);
+  }, [unauth]);
   return (
     <>
       <div className="flex min-h-screen w-full bg-main-white flex border-box">
