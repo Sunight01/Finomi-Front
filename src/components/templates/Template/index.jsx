@@ -33,27 +33,33 @@ const Template = (props) => {
       const ls = getLocalStorage("user");
       const ls_t = getLocalStorage("token");
 
-      if (ls === null || ls_t === null) {
+      if (!ls || !ls_t) {
         setUnauth(true);
         return;
       }
 
-      const res = await verifyUserAPI();
-      if (res.status === 401) {
-        if (res.message === "No tienes permisos para acceder a esta página") {
+      try {
+        const res = await verifyUserAPI();
+        if (
+          res.status === 401 &&
+          res.message === "No tienes permisos para acceder a esta página"
+        ) {
           setUnauth(true);
-          console.log(unauth);
+          return;
         }
-      }
 
-      if (ls) {
-        const { username } = ls;
-        setUser(username);
+        if (ls.username) {
+          setUser(ls.username);
+        }
+      } catch (error) {
+        console.error("Error verifying user:", error);
+        setUnauth(true);
       }
     };
 
     verif();
-  }, [unauth]);
+  }, []); // Dependencia vacía para que solo corra una vez al montar el componente
+
   return (
     <>
       <div className="flex min-h-screen w-full bg-main-white flex border-box">
@@ -74,9 +80,7 @@ const Template = (props) => {
               {months[currentDate.getMonth()]}, {currentDate.getFullYear()}
             </p>
           </header>
-          <div className="flex-grow w-full">
-            {props.children}
-          </div>
+          <div className="flex-grow w-full">{props.children}</div>
         </div>
       </div>
       <UnauthDialog unauth={unauth} />

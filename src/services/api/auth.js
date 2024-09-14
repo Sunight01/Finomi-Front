@@ -14,7 +14,7 @@ export const verifyUserAPI = async () => {
     return res.data;
   } catch (error) {
     if (error.name === "AxiosError") {
-      if (error.response.status === 401 && error.response.statusText === "Unauthorized") {
+      if (error.response.data.status === 401 && error.response.data.message === "Invalid token") {
         return {
           status: 401,
           message: "No tienes permisos para acceder a esta página"

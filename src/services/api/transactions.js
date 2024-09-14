@@ -73,7 +73,6 @@ export const getTransactions = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res)
     return res.data;
   } catch (error) {
     return unauth401(error);
