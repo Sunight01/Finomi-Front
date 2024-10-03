@@ -56,25 +56,32 @@ const Login = () => {
   // Función para enviar los datos al servidor para hacer el login
   const onSubmit = async (data) => {
     const loginLoading = toast.loading("Ingresando...");
-    const res = await loginAPI(data);
-    if (res.status === 200) {
-      toast.success("Ingreso exitoso!", {
-        id: loginLoading,
-      });
-      setLocalStorage("user", {
-        id: res.response.id,
-        username: res.response.username,
-        email: res.response.email,
-      });
-      setLocalStorage("token", { token: res.response.token });
-      navigate("/dashboard");
-    } else {
+    try {
+      const res = await loginAPI(data);
+      console.log(res)
+      if (res.status === 200) {
+        toast.success("Ingreso exitoso!", {
+          id: loginLoading,
+        });
+        setLocalStorage("user", {
+          id: res.response.id,
+          username: res.response.username,
+          email: res.response.email,
+        });
+        setLocalStorage("token", { token: res.response.token });
+        navigate("/dashboard");
+      } else {
+        toast.error("Ha ocurrido un error al ingresar", {
+          id: loginLoading,
+        });
+        if (res.response === "Invalid login credentials") {
+          setApiError("Correo o contraseña incorrectos");
+        }
+      }
+    } catch (error) {
       toast.error("Ha ocurrido un error al ingresar", {
         id: loginLoading,
       });
-      if (res.response === "Invalid login credentials") {
-        setApiError("Correo o contraseña incorrectos");
-      }
     }
   };
 
@@ -82,7 +89,9 @@ const Login = () => {
     <>
       <LoginTemplate>
         <div className="login-header mb-10 flex flex-col items-center gap-2">
-          <h1 className="text-3xl font-bold font-sans text-center">Bienvenido a Finomi</h1>
+          <h1 className="text-3xl font-bold font-sans text-center">
+            Bienvenido a Finomi
+          </h1>
           <p className="text-gray-500 text-lg text-center">
             Tu espacio personal para gestionar tus ingresos y gastos.
           </p>
@@ -195,7 +204,12 @@ const Login = () => {
             <div className="form-button mt-4">
               <ThemeProvider theme={theme}>
                 <Stack spacing={0} direction="row">
-                  <Button id="login-button" type="onSubmit" variant="contained" color="black">
+                  <Button
+                    id="login-button"
+                    type="onSubmit"
+                    variant="contained"
+                    color="black"
+                  >
                     Ingresar
                   </Button>
                 </Stack>

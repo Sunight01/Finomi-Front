@@ -64,25 +64,32 @@ const Register = () => {
   // Función para enviar los datos al servidor para hacer el registro.
   const onSubmit = async (data) => {
     const loginLoading = toast.loading("Ingresando...");
-    const res = await registerAPI(data);
-    if (res.status === 200) {
-      toast.success("Ingreso exitoso!", {
-        id: loginLoading,
-      });
-      setLocalStorage("user", {
-        id: res.response.id,
-        username: res.response.username,
-        email: res.response.email,
-      });
-      setLocalStorage("token", { token: res.response.token });
-      navigate("/dashboard");
-    } else {
+    try {
+      const res = await registerAPI(data);
+      if (res.status === 200) {
+        toast.success("Ingreso exitoso!", {
+          id: loginLoading,
+        });
+        setLocalStorage("user", {
+          id: res.response.id,
+          username: res.response.username,
+          email: res.response.email,
+        });
+        setLocalStorage("token", { token: res.response.token });
+        navigate("/dashboard");
+      } else {
+        toast.error("Ha ocurrido un error al ingresar ", {
+          id: loginLoading,
+        });
+        if (res.error === "user already exists") {
+          setApiError("Usuario ya registrado");
+        }
+      }
+    } catch (error) {
       toast.error("Ha ocurrido un error al ingresar", {
         id: loginLoading,
       });
-      if (res.response === "User already registered") {
-        setApiError("Usuario ya registrado");
-      }
+      setApiError("Usuario ya registrado");
     }
   };
 

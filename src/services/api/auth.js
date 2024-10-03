@@ -40,6 +40,7 @@ export const registerAPI = async (data) => {
     const res = await axios.post(`/api/auth/register`, data);
     return res.data;
   } catch (error) {
+    console.log(error.response.data)
     return error.response.data;
   }
 };
