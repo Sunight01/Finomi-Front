@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import { getLocalStorage } from "../../../functions/localStorage";
 
 import Template from "../../../components/templates/Template";
+import EditDialog from "./EditDialog";
 
 import Divider from "@mui/material/Divider";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -26,6 +26,15 @@ const theme = createTheme({
 const Profile = () => {
   const [username, setUsername] = useState("user");
   const [email, setEmail] = useState("email@email.com");
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const handleOpenEdit = () => {
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
 
   useEffect(() => {
     const ls = getLocalStorage("user");
@@ -37,33 +46,53 @@ const Profile = () => {
   return (
     <>
       <Template>
-        <div className="w-full h-full flex flex-col justify-center items-center px-4">
-          <div className="bg-violet-100 max-w-[450px] w-full max-h-[350px] h-full rounded-xl flex flex-col items-center pt-10 px-6">
-            {/* <PersonOutlineOutlinedIcon
-              sx={{ color: "black", fontSize: "80px" }}
-            /> */}
-            <span className="font-semibold text-2xl">Tu perfil</span>
-            <div className="flex flex-col items-center mt-8 mb-10 sm sm:max-mbm:mt-[40px] sm:max-mbm:mb-[40px] sm:max-mbm:gap-4">
-              <span className="text-xl font-semibold sm:max-mbm:text-2xl">{username}</span>
-              <span className="text-xl text-gray-700 sm:max-mbm:text-2xl">{email}</span>
-            </div>
+        <div className="w-full h-full flex flex-col justify-center items-center px-2">
+          <div className="bg-violet-100 max-w-[500px] w-full max-h-[450px] h-full rounded-xl flex flex-col items-center">
+            
+            <span className="font-semibold text-3xl my-4">Tu perfil</span>
             <Divider orientation="horizontal" variant="middle" flexItem />
-            <div className="mt-6 sm:max-mbm:mt-12">
-              <ThemeProvider theme={theme}>
-                <Stack spacing={0} direction="row">
-                  <Button
-                    id="edit-button"
-                    type="onClick"
-                    variant="contained"
-                    color="black"
-                  >
-                    EDITAR
-                  </Button>
-                </Stack>
-              </ThemeProvider>
+
+            <div className="flex flex-col w-full h-full items-center">
+
+              <div className="flex flex-col justify-center items-start mt-8 mb-10 sm:max-mbm:mt-[40px] sm:max-mbm:mb-[40px] gap-4 flex-1 flex-1 ">
+
+                <div className="flex flex-col gap-1">
+                  <span className="text-lg text-gray-700">Nombre de usuario</span>
+                  <span className="text-xl font-semibold sm:max-mbm:text-2xl">
+                    {username}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <span className="text-lg text-gray-700">Correo electronico</span>
+                  <span className="text-xl font-semibold sm:max-mbm:text-2xl">
+                    {email}
+                  </span>
+                </div>
+                
+                <div className="mt-6 sm:max-mbm:mt-12">
+                  <ThemeProvider theme={theme}>
+                    <Stack spacing={0} direction="row">
+                      <Button
+                        id="edit-button"
+                        type="onClick"
+                        variant="contained"
+                        color="black"
+                        onClick={() => handleOpenEdit()}
+                      >
+                        EDITAR
+                      </Button>
+                    </Stack>
+                  </ThemeProvider>
+                </div>
+
+              </div>
+
             </div>
+
           </div>
         </div>
+        <EditDialog open={openEdit} close={handleCloseEdit} />
       </Template>
     </>
   );

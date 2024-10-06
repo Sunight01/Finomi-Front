@@ -92,18 +92,20 @@ const UserMenu = () => {
             </div>
           </div>
           <Divider />
-          <MenuItem onClick={handleClose}>
-            <Link to={'/usuario/perfil'} className="w-full h-full">
+          <MenuItem onClick={handleClose} sx={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0px' }}>
+            <Link to={'/usuario/perfil'} className="w-full h-full py-2 px-4">
               Perfil
             </Link>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <Link to={'/usuario/solicitudes'} className="w-full h-full">
+          <MenuItem onClick={handleClose} sx={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0px' }}>
+            <Link to={'/usuario/solicitudes'} className="w-full h-full py-2 px-4">
               Mis solicitudes
             </Link>
           </MenuItem>
           <Divider />
-          <MenuItem onClick={handleLogout} className="w-full h-full">Salir</MenuItem>
+          <MenuItem onClick={handleLogout} className="w-full h-full p-4" sx={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0px' }}>
+            <span className="w-full h-full py-1 px-4">Salir</span>
+          </MenuItem>
         </Menu>
       </div>
     </>

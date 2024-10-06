@@ -56,22 +56,22 @@ const MenuNavbar = () => {
           sx={{ 
             '& .MuiPaper-root': {
               margin: '0px 10px 0px 20px',
-              borderRadius: '12px', // Ajusta el valor según tus necesidades
+              borderRadius: '12px',
             }
           }}
         >
-          <MenuItem onClick={handleClose}>
-            <Link to={'/dashboard'} className="w-full h-full">
+          <MenuItem onClick={handleClose} sx={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0px' }}>
+            <Link to={'/dashboard'} className="w-full h-full py-2 px-4">
               <AutoAwesomeMosaicOutlinedIcon/> <span className="ml-2">Dashboard</span>
             </Link>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <Link to={'/wallet'} className="w-full h-full">
+          <MenuItem onClick={handleClose} sx={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0px' }}>
+            <Link to={'/wallet'} className="w-full h-full py-2 px-4">
               <AccountBalanceWalletOutlinedIcon /> <span className="ml-2">Mi billetera</span>
             </Link>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <Link to={'/finomi'} className="w-full h-full">
+          <MenuItem onClick={handleClose} sx={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0px' }}>
+            <Link to={'/finomi'} className="w-full h-full py-2 px-4">
               <PersonOutlineOutlinedIcon /> <span className="ml-2">Finomi</span>
             </Link>
           </MenuItem>

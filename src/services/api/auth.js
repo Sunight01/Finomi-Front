@@ -45,6 +45,24 @@ export const registerAPI = async (data) => {
   }
 };
 
+export const updateUserAPI = async (data) => {
+  const { token } = await getLocalStorage('token');
+  const { id } = await getLocalStorage('user');
+  try {
+    const res = await axios.put(`/api/auth/update/${id}`, data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error) {
+    return error.response.data;
+  }
+  console.log(data)
+}
+
 // Función para cerrar sesión en la API
 export const logoutAPI = async () => {
   const { token } = await getLocalStorage('token');
