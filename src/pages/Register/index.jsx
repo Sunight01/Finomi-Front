@@ -74,6 +74,7 @@ const Register = () => {
           id: res.response.id,
           username: res.response.username,
           email: res.response.email,
+          role: res.response.role
         });
         setLocalStorage("token", { token: res.response.token });
         navigate("/dashboard");

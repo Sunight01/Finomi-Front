@@ -1,20 +1,35 @@
 import { useState, useEffect } from "react";
 
-import Template from "../../../components/templates/Template";
-import { EmptyMessage } from "../../../components/Wallet/EmptyMessage";
-import { CreateSuggest } from "./CreateSuggest";
+import Template from "../../../../components/templates/Template";
+import { DialogSuggest } from "./DialogSuggest";
 
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Button, Stack } from "@mui/material";
 
-import { getSuggestionsAPI } from "../../../services/api/suggest";
+import { getAllSuggestionsAPI } from "../../../../services/api/suggest";
+import { EmptyMessage } from "../../../../components/Wallet/EmptyMessage";
 
-const Solicitudes = () => {
-  const [solicitudes, setSolicitudes] = useState([]);
+const theme = createTheme({
+  palette: {
+    black: {
+      main: "#000000",
+      light: "#000000",
+      dark: "#000000",
+      contrastText: "#FFFFFF",
+    },
+  },
+});
+
+const ViewSuggests = () => {
+  const [suggests, setSuggests] = useState([]);
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(4); // Cantidad de solicitudes por página
+  const [dialogData, setDialogData] = useState({});
 
-  const handleOpen = () => {
+  const handleOpen = (data) => {
+    setDialogData(data);
     setOpen(true);
   };
 
@@ -22,42 +37,33 @@ const Solicitudes = () => {
     setOpen(false);
   };
 
-  const addSuggest = (newSuggest) => {
-    setSolicitudes((prevSuggest) => [...prevSuggest, newSuggest]);
-  };
-
-  const callSolicitudes = async () => {
-    try {
-      const res = await getSuggestionsAPI();
-      if (res.status === 200) {
-        setSolicitudes(res.response);
-      }
-    } catch (error) {
-      setSolicitudes([]);
+  const callSuggests = async () => {
+    const res = await getAllSuggestionsAPI();
+    if (res.status === 200) {
+      setSuggests(res.response);
     }
   };
 
   // Paginación: determinar solicitudes actuales según la página
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentSolicitudes = solicitudes.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentSuggests = suggests.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
 
   useEffect(() => {
-    callSolicitudes();
+    callSuggests();
   }, []);
   return (
     <>
       <Template>
         <div className="p-10">
           <div className=" flex flex-wrap justify-between sm:max-mdm:flex-col sm:max-mdm:items-center gap-4">
-            <h1 className="text-2xl font-semibold">Mis solicitudes</h1>
+            <h1 className="text-2xl font-semibold">
+              Solicitudes de los usuarios
+            </h1>
             <button
               className="rounded-lg border-black border-2 p-2 hover:bg-gray-200 active:bg-green-200 duration-200"
               onClick={handleOpen}
@@ -66,11 +72,11 @@ const Solicitudes = () => {
             </button>
           </div>
           <div className="mt-4 w-full h-[540px] overflow-y-auto">
-            {solicitudes.length === 0 ? (
+            {suggests.length === 0 ? (
               <EmptyMessage message="No tienes solicitudes pendientes" />
             ) : (
               <div className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2">
-                {currentSolicitudes.map((solicitud) => (
+                {currentSuggests.map((solicitud) => (
                   <div
                     key={solicitud.id}
                     className="bg-white rounded-lg shadow-md p-4 flex flex-col gap-4 flex-wrap min-w-[300px] sm:max-mbm:min-w-[200px] gap-3 flex-1"
@@ -95,6 +101,18 @@ const Solicitudes = () => {
                         <span>{solicitud.response}</span>
                       )}
                     </p>
+                    <ThemeProvider theme={theme}>
+                      <Stack spacing={0} direction="row">
+                        <Button
+                          type="onSubmit"
+                          variant="contained"
+                          color="black"
+                          onClick={() => handleOpen(solicitud)}
+                        >
+                          Ver
+                        </Button>
+                      </Stack>
+                    </ThemeProvider>
                   </div>
                 ))}
               </div>
@@ -104,17 +122,17 @@ const Solicitudes = () => {
           {/* Paginación */}
           <div className="flex justify-center mt-4">
             <Pagination
-              count={Math.ceil(solicitudes.length / itemsPerPage)} // Total de páginas
+              count={Math.ceil(suggests.length / itemsPerPage)} // Total de páginas
               page={currentPage}
               onChange={handlePageChange}
               color="primary"
             />
           </div>
         </div>
-        <CreateSuggest open={open} close={handleClose} add={addSuggest} />
+        <DialogSuggest open={open} close={handleClose} data={dialogData} />
       </Template>
     </>
   );
 };
 
-export default Solicitudes;
+export default ViewSuggests;
