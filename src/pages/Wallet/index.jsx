@@ -187,38 +187,42 @@ const Wallet = () => {
   return (
     <>
       <Template>
-        <div className="w-full h-auto flex flex-row justify-center items-center mt-8">
+        <div className="max-w-full h-auto flex flex-row justify-center items-center mt-8">
           <Tooltip title="Volver al mes anterior">
-            <button
-              className={`w-12 h-12 rounded-full flex justify-center items-center ${
-                disablePastMonths(currentDate)
-                  ? "bg-gray-100 cursor-not-allowed opacity-50"
-                  : "hover:bg-gray-200"
-              }`}
-              onClick={handleMinusMonth}
-              disabled={disablePastMonths(currentDate)}
-            >
-              <ArrowBackIosNewIcon fontSize="large" />
-            </button>
+            <div className="flex flex-1 justify-center">
+              <button
+                className={`rounded-full justify-center items-center ${
+                  disablePastMonths(currentDate)
+                    ? "bg-gray-100 cursor-not-allowed opacity-50"
+                    : "hover:bg-gray-200"
+                }`}
+                onClick={handleMinusMonth}
+                disabled={disablePastMonths(currentDate)}
+              >
+                <ArrowBackIosNewIcon fontSize="large" />
+              </button>
+            </div>
           </Tooltip>
 
-          <div className="lg:w-32 mbm:max-lg:w-20 md:mx-36 mbm:max-md:mx-2 mx-1 text-center">
-            <span className="lg:text-3xl mbm:max-lg:text-2xl sm:text-xl font-semibold">
+          <div className="flex flex-1 justify-center">
+            <span className="lg:text-3xl mbm:max-lg:text-2xl sm:text-xl font-semibold text-center">
               {months[currentDate.getMonth()]} {currentDate.getFullYear()}
             </span>
           </div>
           <Tooltip title="Ir al mes siguiente">
-            <button
-              className={`w-12 h-12 rounded-full flex justify-center items-center ${
-                isCurrentMonth(currentDate)
-                  ? "bg-gray-100 cursor-not-allowed opacity-50"
-                  : "hover:bg-gray-200"
-              }`}
-              onClick={handleNextMonth}
-              disabled={isCurrentMonth(currentDate)}
-            >
-              <ArrowForwardIosIcon fontSize="large" />
-            </button>
+            <div className="flex flex-1 justify-center">
+              <button
+                className={`w-12 h-12 rounded-full justify-center items-center ${
+                  isCurrentMonth(currentDate)
+                    ? "bg-gray-100 cursor-not-allowed opacity-50"
+                    : "hover:bg-gray-200"
+                }`}
+                onClick={handleNextMonth}
+                disabled={isCurrentMonth(currentDate)}
+              >
+                <ArrowForwardIosIcon fontSize="large" />
+              </button>
+            </div>
           </Tooltip>
         </div>
 
@@ -241,13 +245,13 @@ const Wallet = () => {
         {!filteredTransactions.length ? (
           <EmptyMessage message="No tienes ningún ingreso o gasto en este mes, añade alguno para verlo aquí!" />
         ) : (
-          <div className="h-auto w-auto p-10 pt-4 flex flex-row justify-between">
-            <div className="h-full w-[830px] max-w-[830px]">
-              <span className="text-2xl text-gray-500 font-semibold hover:text-green-500 duration-200">
+          <div className="h-auto w-auto p-10 pt-4 flex flex-row justify-between sm:max-lg:flex-col">
+            <div className="h-full w-[830px] sm:max-lg:w-full max-w-[830px]">
+              <span className="text-2xl text-gray-500 font-semibold hover:text-green-500 sm:max-lg:text-green-500 duration-200">
                 Ingresos
               </span>
 
-              <div className="my-12 w-full flex flex-row flex-wrap gap-8">
+              <div className="my-12 sm:max-lg:my-6 w-full flex flex-row flex-wrap gap-8">
                 {filteredTransactions
                   .filter((transaction) => transaction.type === "Ingreso")
                   .map((transaction) => (
@@ -269,12 +273,12 @@ const Wallet = () => {
               sx={{ margin: "0 20px" }}
             />
 
-            <div className="h-full w-200 text-right w-[830px] max-w-[830px]">
-              <span className="text-2xl text-gray-500 font-semibold hover:text-red-400 duration-200">
+            <div className="h-full w-200 text-right sm:max-lg:text-left w-[830px] max-w-[830px] sm:max-lg:w-full">
+              <span className="text-2xl text-gray-500 font-semibold hover:text-red-400 sm:max-lg:text-red-400 duration-200">
                 Gastos
               </span>
 
-              <div className="my-10 w-full flex flex-row flex-wrap gap-8">
+              <div className="my-12 sm:max-lg:my-6 w-full flex flex-row sm:max-lg:flex-col flex-wrap gap-8">
                 {filteredTransactions
                   .filter((transaction) => transaction.type === "Gasto")
                   .map((transaction) => (
