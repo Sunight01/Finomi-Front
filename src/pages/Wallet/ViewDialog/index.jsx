@@ -65,7 +65,7 @@ const ViewDialog = ({ open, close, deleteData, transaction }) => {
     <>
       {visible && (
         <DialogTemplate>
-          <div className="flex flex-col px-8 py-10 gap-4">
+          <div className="flex flex-col px-8 py-10 gap-4 max-w-full">
             <div className="flex flex-row justify-between items-center">
               <h1 className="text-2xl font-semibold">{data.title}</h1>
               <button onClick={handleClose}>
@@ -78,8 +78,12 @@ const ViewDialog = ({ open, close, deleteData, transaction }) => {
             </div>
             <div>
               <span>Descripción</span>
-              <div className="border-2 border-slate-300 rounded-md p-2 mt-2 w-[320px] max-w-[380px]">
-                {data.description}
+              <div className="border-2 border-slate-300 rounded-md p-2 mt-2 w-full">
+                {data.description === "" ? (
+                  <span>Sin descripción</span>
+                ) : (
+                  <span>{data.description}</span>
+                )}
               </div>
             </div>
             <span>{data.tag}</span>

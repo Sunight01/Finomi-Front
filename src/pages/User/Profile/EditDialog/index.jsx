@@ -98,7 +98,7 @@ const EditDialog = ({ open, close }) => {
     <>
       {visible && (
         <DialogTemplate>
-          <div className="flex flex-col px-8 py-10 gap-4 w-full">
+          <div className="flex flex-col px-8 sm:max-mdm:px-6 py-10 gap-4 max-w-full">
             <div className="flex flex-row justify-between items-center">
               <h1 className="text-2xl font-semibold">Editar</h1>
               <button onClick={handleClose}>
@@ -117,7 +117,7 @@ const EditDialog = ({ open, close }) => {
 
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-2 w-[400px]"
+              className="flex flex-col gap-2 max-w-[400px]"
             >
               <label htmlFor="username"></label>
               <Controller
@@ -206,7 +206,7 @@ const EditDialog = ({ open, close }) => {
               />
               <ThemeProvider theme={theme}>
                 <Stack spacing={0} direction="row">
-                  <Button variant="contained" color="black" type="submit">
+                  <Button variant="contained" color="black" type="onSubmit">
                     Confirmar
                   </Button>
                 </Stack>

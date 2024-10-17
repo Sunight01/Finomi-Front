@@ -110,7 +110,7 @@ const EditDialog = ({ open, close, update, transaction }) => {
     <>
       {visible && (
         <DialogTemplate>
-          <div className="flex flex-col px-8 py-10 gap-4">
+          <div className="flex flex-col px-8 sm:max-mdm:px-6 py-10 gap-4 max-w-full">
             <div className="flex flex-row justify-between items-center">
               <h1 className="text-2xl font-semibold">Editar</h1>
               <button onClick={handleClose}>
@@ -120,7 +120,7 @@ const EditDialog = ({ open, close, update, transaction }) => {
 
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-2 w-[400px]"
+              className="flex flex-col gap-2 w-full"
             >
               <label htmlFor="title"></label>
               <Controller

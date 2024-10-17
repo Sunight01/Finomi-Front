@@ -72,7 +72,7 @@ const CreateSuggest = ({ open, close, add }) => {
     <>
       {open && (
         <DialogTemplate>
-          <div className="flex flex-col px-6 py-8 gap-4">
+          <div className="flex flex-col px-8 sm:max-mdm:px-6 py-10 gap-4 max-w-full">
             <div className="flex flex-row justify-between items-center">
               <h1 className="text-2xl font-semibold">Crea una solicitud</h1>
               <button onClick={handleClose}>
@@ -81,7 +81,7 @@ const CreateSuggest = ({ open, close, add }) => {
             </div>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-2 w-[400px]"
+              className="flex flex-col gap-2 md:w-[400px] max-w-[400px]"
             >
               <label htmlFor="title"></label>
               <Controller
