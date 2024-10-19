@@ -64,12 +64,6 @@ const ViewSuggests = () => {
             <h1 className="text-2xl font-semibold">
               Solicitudes de los usuarios
             </h1>
-            <button
-              className="rounded-lg border-black border-2 p-2 hover:bg-gray-200 active:bg-green-200 duration-200"
-              onClick={handleOpen}
-            >
-              Crea una solicitud
-            </button>
           </div>
           <div className="mt-4 w-full h-[540px] overflow-y-auto">
             {suggests.length === 0 ? (

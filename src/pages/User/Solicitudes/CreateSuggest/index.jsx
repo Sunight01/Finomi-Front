@@ -81,7 +81,7 @@ const CreateSuggest = ({ open, close, add }) => {
             </div>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-2 md:w-[400px] max-w-[400px]"
+              className="flex flex-col gap-2 w-full max-w-[400px]"
             >
               <label htmlFor="title"></label>
               <Controller
