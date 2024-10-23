@@ -6,7 +6,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Stack } from "@mui/material";
 
 import { getTransactions } from "../../../services/api/transactions";
-import { getChatAPI, sendMessageAPI, deleteMessageAPI, saveMessagesAPI } from "../../../services/api/chat";
+import {
+  getChatAPI,
+  sendMessageAPI,
+  deleteMessageAPI,
+  saveMessagesAPI,
+} from "../../../services/api/chat";
 
 import toast, { Toaster } from "react-hot-toast";
 
@@ -30,25 +35,41 @@ const Analysis = () => {
   // Función para generar el análisis cuando se presiona el botón
   const generateAnalysis = async () => {
     const loginLoading = toast.loading("Generando análisis...");
-    const res = await getTransactions();
-    const transactions = JSON.stringify(res.response);
-    const analysis = [{role: "assistant", content: "Hola! ¿cuales son tus dudas?"}, {role: "user", content: `Puedes analizar mis transacciones y darme consejos: ${transactions}`}]; 
-    const msgRes = await sendMessageAPI(analysis);
-    const updatedMessages = [...analysis, msgRes.response.message];
-    setUserMessages([updatedMessages[2]]);
+    try {
+      const res = await getTransactions();
+      const transactions = JSON.stringify(res.response);
+      const analysis = [
+        { role: "assistant", content: "Hola! ¿cuales son tus dudas?" },
+        {
+          role: "user",
+          content: `Puedes analizar mis transacciones y darme consejos: ${transactions}`,
+        },
+      ];
 
-    await deleteMessageAPI();
-    const saveRes = await saveMessagesAPI(updatedMessages);
-    if (saveRes.status === 200) {
-      toast.success("Análisis generado exitosamente!", {
-        id: loginLoading,
-      });
-    } else {
+      const msgRes = await sendMessageAPI(analysis);
+      const updatedMessages = [...analysis, msgRes.response.message];
+      setUserMessages([updatedMessages[2]]);
+
+      await deleteMessageAPI();
+
+      const saveRes = await saveMessagesAPI(updatedMessages);
+
+      if (saveRes.status === 200) {
+        toast.success("Análisis generado exitosamente!", {
+          id: loginLoading,
+        });
+      } else {
+        toast.error("Ha ocurrido un error al generar el análisis", {
+          id: loginLoading,
+        });
+      }
+    } catch (error) {
       toast.error("Ha ocurrido un error al generar el análisis", {
         id: loginLoading,
       });
+      console.log(error)
     }
-  }
+  };
 
   // Función para obtener los mensajes del chat del usuario y actualizar el estado
   const getMessages = async () => {

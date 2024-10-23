@@ -18,59 +18,47 @@ const Dashboard = () => {
 
   const [mayorIngreso, setMayorIngreso] = useState({});
   const [mayorGasto, setMayorGasto] = useState({});
-  
-  // OBtenemos la fecha actual
+
+  // Obtenemos la fecha actual
   const currentDate = new Date();
+
+  const filterTransactionsByMonth = (transactions, date) => {
+    return transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.date);
+      return (
+        transactionDate.getMonth() === date.getMonth() &&
+        transactionDate.getFullYear() === date.getFullYear()
+      );
+    });
+  };
 
   // Función para calcular los ingresos y los gastos más altos
   const maxTransactions = (data) => {
+    let totalIngresos = 0;
+    let totalGastos = 0;
+    let maxIngreso = {};
+    let maxGasto = {};
 
-    const filterTransactionsByMonth = (transactions, date) => {
-      return transactions.filter((transaction) => {
-        const transactionDate = new Date(transaction.date);
-        return (
-          transactionDate.getMonth() === date.getMonth() &&
-          transactionDate.getFullYear() === date.getFullYear()
-        );
-      });
-    };
+    const filteredTransactions = filterTransactionsByMonth(data, currentDate);
 
-    const filteredTransactions = filterTransactionsByMonth(
-      data,
-      currentDate
-    );
-
-    // Encontrar el mayor ingreso
-    const maxIngreso = filteredTransactions
-      .filter((transaction) => transaction.type === "Ingreso")
-      .reduce(
-        (prev, current) => (prev.amount > current.amount ? prev : current),
-        {}
-      );
-
-    // Encontrar el mayor gasto
-    const maxGasto = filteredTransactions
-      .filter((transaction) => transaction.type === "Gasto")
-      .reduce(
-        (prev, current) => (prev.amount > current.amount ? prev : current),
-        {}
-      );
-
-    // Suma todos los ingresos
-    const totalIngresos = filteredTransactions
-      .filter((transaction) => transaction.type === "Ingreso")
-      .reduce((total, transaction) => total + parseInt(transaction.amount), 0);
-
-    // Sumar todos los gastos
-    const totalGastos = filteredTransactions
-      .filter((transaction) => transaction.type === "Gasto")
-      .reduce((total, transaction) => total + parseInt(transaction.amount), 0);
-
-    const result = totalIngresos - totalGastos;
+    filteredTransactions.forEach((transaction) => {
+      const amount = Number(transaction.amount);
+      if (transaction.type === "Ingreso") {
+        totalIngresos += amount;
+        if (!maxIngreso.amount || amount > maxIngreso.amount) {
+          maxIngreso = transaction;
+        }
+      } else if (transaction.type === "Gasto") {
+        totalGastos += amount;
+        if (!maxGasto.amount || amount > maxGasto.amount) {
+          maxGasto = transaction;
+        }
+      }
+    });
 
     setMayorGasto(maxGasto);
     setMayorIngreso(maxIngreso);
-    setBeneficio(result);
+    setBeneficio(totalIngresos - totalGastos);
 
     setTotalIngresos(totalIngresos);
     setTotalGastos(totalGastos);
@@ -79,19 +67,27 @@ const Dashboard = () => {
   useEffect(() => {
     // Función para obtener todos los datos financieros del usuario
     const callMaxTransactions = async () => {
-      const res = await getTransactions();
+      try {
+        const res = await getTransactions();
 
-      if (res.status === 200) {
-        maxTransactions(res.response);
+        if (res.status === 200) {
+          maxTransactions(res.response);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
 
     // Función para obtener el último consejo del usuario
     const callIAdvice = async () => {
-      const res = await getChatAPI();
+      try {
+        const res = await getChatAPI();
 
-      if (res.status === 200) {
-        setIAdvice(res.response[0].messages[2].content);
+        if (res.status === 200) {
+          setIAdvice(res.response[0].messages[2].content);
+        }
+      } catch (error) {
+        console.log(error)
       }
     };
 

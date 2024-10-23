@@ -71,8 +71,9 @@ export const getTransactions = async () => {
     const res = await axios.get(`api/transactions/get/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }
     });
+
     return res.data;
   } catch (error) {
     return unauth401(error);
