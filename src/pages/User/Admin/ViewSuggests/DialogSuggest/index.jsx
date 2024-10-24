@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { updateSuggestAPI } from "../../../../../services/api/suggest";
 
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 const theme = createTheme({
   palette: {
@@ -68,6 +69,14 @@ const DialogSuggest = ({ open, close, data }) => {
     reset();
     close();
   };
+
+  useEffect(() => {
+    if (data.response) {
+      reset({
+        response: data.response,
+      });
+    }
+  }, [data]);
   return (
     <>
       {open && (
