@@ -98,7 +98,7 @@ const Login = () => {
           </p>
         </div>
         {apiError && (
-          <div className="my-4 bg-red-400 text-white p-2 rounded flex flex-row justify-between items-center">
+          <div id="api-error" className="my-4 bg-red-400 text-white p-2 rounded flex flex-row justify-between items-center">
             <p className="text-md">{apiError}</p>
             <button className="text-white" onClick={() => setApiError(null)}>
               <CloseIcon fontSize="medium" />
