@@ -195,7 +195,7 @@ const Login = () => {
               />
             </div>
             <div className="form-register mt-4">
-              <p className="text-gray-500 text-base font-medium">
+              <p id="register-button" className="text-gray-500 text-base font-medium">
                 No tienes cuenta?{" "}
                 <Link className="underline" to="/register">
                   Registrate!

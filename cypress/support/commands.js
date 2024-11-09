@@ -26,7 +26,15 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add("login", (email, password) => {
-  cy.get('input[name="email"]').type(email);
-  cy.get('input[name="password"]').type(password);
+  email && cy.get('input[name="email"]').type(email);
+  password && cy.get('input[name="password"]').type(password);
   cy.get("#login-button").click();
+});
+
+Cypress.Commands.add("register", (username, email, password) => {
+  cy.get("#register-button").click();
+  username && cy.get('input[name="username"]').type(username);
+  email && cy.get('input[name="email"]').type(email);
+  password && cy.get('input[name="password"]').type(password);
+  cy.get("#register-submit-button").click();
 });

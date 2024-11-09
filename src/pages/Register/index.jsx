@@ -125,7 +125,7 @@ const Register = () => {
                 control={control}
                 rules={{
                   required: "Nombre es requerido",
-                  pattern: {
+                  minLength: {
                     value: 3,
                     message: "Ingresa un nombre de 3 caracteres como mínimo",
                   },
@@ -250,7 +250,7 @@ const Register = () => {
             <div className="form-button mt-4">
               <ThemeProvider theme={theme}>
                 <Stack spacing={0} direction="row">
-                  <Button type="onSubmit" variant="contained" color="black">
+                  <Button id="register-submit-button" type="onSubmit" variant="contained" color="black">
                     Registrarse
                   </Button>
                 </Stack>
