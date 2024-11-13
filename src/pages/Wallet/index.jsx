@@ -229,6 +229,7 @@ const Wallet = () => {
         <div className="w-full h-10 flex flex-row justify-center items-center mt-4">
           <Tooltip title="Añadir">
             <button
+              id='wallet-create-button'
               className="w-16 h-16 rounded-full flex justify-center items-center hover:bg-gray-200 duration-200 absolute transform"
               onClick={handleOpenCreate}
             >

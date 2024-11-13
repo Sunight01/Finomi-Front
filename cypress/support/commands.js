@@ -38,3 +38,27 @@ Cypress.Commands.add("register", (username, email, password) => {
   password && cy.get('input[name="password"]').type(password);
   cy.get("#register-submit-button").click();
 });
+
+Cypress.Commands.add("walletPage", () => {
+  cy.wait(1000);
+  cy.visit("/wallet");
+});
+
+Cypress.Commands.add("createTransaction", (title, amount, type, date, tag, description) => {
+  cy.wait(1000);
+  cy.get("#wallet-create-button").click();
+  title && cy.get('input[name="title"]').type(title);
+  amount && cy.get('input[name="amount"]').type(amount);
+  type && cy.get('#type').click();
+  if (type === 'Gasto') {
+    cy.get("#type-gasto").click();
+  }
+  if (type === 'Ingreso') {
+    cy.get("#type-ingreso").click();
+  }
+  date && cy.get('input[name="date"]').type(date);
+  tag && cy.get('#tag').click();
+  tag && cy.get(`[data-value=${tag}]`).click();
+  description && cy.get('#description').type(description);
+  cy.get('#create-submit-button').click();
+});

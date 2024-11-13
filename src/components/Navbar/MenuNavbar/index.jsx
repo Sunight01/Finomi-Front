@@ -27,10 +27,12 @@ const MenuNavbar = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center">
+      <div id="navbar-menu-container" className="flex justify-center items-center">
         <Tooltip title="Menú">
           <button
+            id="navbar-menu"
             className="bg-main-white rounded-3xl text-center h-12"
+            data-testid="navbar-menu-button"
             onClick={handleClick}
             aria-controls={open ? "navbar-menu" : undefined}
             aria-haspopup="true"
@@ -41,7 +43,6 @@ const MenuNavbar = () => {
         </Tooltip>
         <Menu
           anchorEl={anchorEl}
-          id="navbar-menu"
           open={open}
           onClose={handleClose}
           onClick={handleClose}
@@ -66,7 +67,7 @@ const MenuNavbar = () => {
             </Link>
           </MenuItem>
           <MenuItem onClick={handleClose} sx={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0px' }}>
-            <Link to={'/wallet'} className="w-full h-full py-2 px-4">
+            <Link id={'wallet-button'} to={'/wallet'} className="w-full h-full py-2 px-4">
               <AccountBalanceWalletOutlinedIcon /> <span className="ml-2">Mi billetera</span>
             </Link>
           </MenuItem>

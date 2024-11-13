@@ -132,6 +132,8 @@ const CreateDialog = ({ open, close, add }) => {
                 name="amount"
                 control={control}
                 rules={{
+                  min: { value: 1, message: "El monto debe ser mayor o igual a 0" },
+                  max: { value: 9999999999, message: "El monto debe ser menor o igual a 99999999999" },
                   required: "La cantidad es obligatoria",
                 }}
                 render={({ field, fieldState: { error } }) => (
@@ -172,8 +174,8 @@ const CreateDialog = ({ open, close, add }) => {
                       label="Tipo"
                       {...field}
                     >
-                      <MenuItem value="Gasto">Gasto</MenuItem>
-                      <MenuItem value="Ingreso">Ingreso</MenuItem>
+                      <MenuItem id="type-gasto" value="Gasto">Gasto</MenuItem>
+                      <MenuItem id="type-ingreso" value="Ingreso">Ingreso</MenuItem>
                     </Select>
                     {error && (
                       <p className="text-red-500 text-sm mt-1">
@@ -269,7 +271,7 @@ const CreateDialog = ({ open, close, add }) => {
               />
               <ThemeProvider theme={theme}>
                 <Stack spacing={0} direction="row">
-                  <Button type="onSubmit" variant="contained" color="black">
+                  <Button id="create-submit-button" type="onSubmit" variant="contained" color="black">
                     Crear
                   </Button>
                 </Stack>
