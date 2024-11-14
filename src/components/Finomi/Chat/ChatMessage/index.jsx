@@ -16,7 +16,7 @@ const ChatMessage = ({ user, message }) => {
   };
 
   return (
-    <div>
+    <div id="text-message">
       <span className="font-semibold">
         {user === "assistant" ? "Finomi" : "Tú"}
       </span>

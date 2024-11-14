@@ -117,6 +117,7 @@ const Analysis = () => {
       <ThemeProvider theme={theme}>
         <Stack spacing={0} direction="row">
           <Button
+            id="generate-button"
             type="button"
             variant="contained"
             color="black"

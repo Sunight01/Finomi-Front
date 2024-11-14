@@ -62,3 +62,21 @@ Cypress.Commands.add("createTransaction", (title, amount, type, date, tag, descr
   description && cy.get('#description').type(description);
   cy.get('#create-submit-button').click();
 });
+
+Cypress.Commands.add("FinomiPage", () => {
+  cy.wait(1000);
+  cy.visit("/finomi");
+});
+
+Cypress.Commands.add("GenerateAnalysis", () => {
+  cy.wait(1000);
+  cy.get('#generate-button').click();
+});
+
+Cypress.Commands.add("GenerateChat", (message) => {
+  cy.wait(1000);
+  cy.get('#chat-button').click();
+  message && cy.get('#chat-input').type(message);
+  cy.get('#send-button').click();
+  cy.wait(4000);
+});

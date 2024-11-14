@@ -22,6 +22,7 @@ const Finomi = () => {
           <div className="pl-8 my-2 h-10 w-full flex flex-row gap-2">
             <Tooltip title="Analisis IA">
               <button
+                id="analysis-button"
                 className={`hover:bg-gray-200 p-2 rounded-lg duration-200 ${
                   activeButton === "Analisis IA" ? "bg-gray-200" : ""
                 }`}
@@ -33,6 +34,7 @@ const Finomi = () => {
             <Divider orientation="vertical" variant="middle" flexItem />
             <Tooltip title="Asistente IA">
               <button
+                id="chat-button"
                 className={`hover:bg-gray-200 p-2 rounded-lg duration-200 ${
                   activeButton === "Asistente IA" ? "bg-gray-200" : ""
                 }`}

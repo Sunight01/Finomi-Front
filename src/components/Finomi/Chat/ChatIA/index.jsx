@@ -107,6 +107,7 @@ const ChatIA = () => {
       <div className="flex gap-2 mt-4">
         {/* Input en la parte inferior */}
         <input
+          id="chat-input"
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
@@ -115,6 +116,7 @@ const ChatIA = () => {
           className="flex-grow p-2 border rounded-lg"
         />
         <button
+          id="send-button"
           onClick={handleSendMessage}
           className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
         >

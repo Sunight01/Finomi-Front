@@ -1,14 +1,14 @@
 /* eslint-disable no-undef */
 
-// describe('CP-010 Wallet', () => {
-//   it('Create a transaction', () => {
-//     cy.visit('http://localhost:5173/')
-//     cy.login('testing@mail.com', 'testing123')
-//     cy.walletPage()
-//     cy.createTransaction('Test', '100', 'Gasto', '2024-11-10', 'Trabajo', 'Descripción')
-//     cy.url().should('include', '/wallet')
-//   })
-// })
+describe('CP-010 Wallet', () => {
+  it('Create a transaction', () => {
+    cy.visit('http://localhost:5173/')
+    cy.login('testing@mail.com', 'testing123')
+    cy.walletPage()
+    cy.createTransaction('Test', '100', 'Gasto', '2024-11-10', 'Trabajo', 'Descripción')
+    cy.url().should('include', '/wallet')
+  })
+})
 
 describe('CP-011 Wallet: invalid form', () => {
   it('Empty transaction', () => {
