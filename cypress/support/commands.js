@@ -80,3 +80,24 @@ Cypress.Commands.add("GenerateChat", (message) => {
   cy.get('#send-button').click();
   cy.wait(4000);
 });
+
+Cypress.Commands.add("OpenUserMenu", (option) => {
+  cy.wait(1000);
+  cy.get('#user-menu').click({force: true});
+  cy.get(`#${option}`).click({force: true});
+}); // user-profile, user-request-button, see-user-requests user-logout
+
+Cypress.Commands.add("CreateRequest", (title, desc) => {
+  cy.wait(1000);
+  cy.get('#create-req').click();
+  title && cy.get('#title').type(title)
+  desc && cy.get('#description').type(desc)
+  cy.get('#submit-button').click()
+});
+
+Cypress.Commands.add("ResponseRequest", (res) => {
+  cy.wait(1000);
+  cy.get('#response-button').click();
+  res && cy.get('#response').type(res)
+  cy.get('#submit-button').click()
+});

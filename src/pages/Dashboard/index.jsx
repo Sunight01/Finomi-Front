@@ -101,17 +101,17 @@ const Dashboard = () => {
         <div className="h-auto w-auto flex flex-wrap p-6 sm:max-md:p-2">
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-green rounded-2xl m-4 gap-12">
             <CheckCircleOutlineIcon fontSize="large" />
-            <span className="text-4xl font-semibold">${totalIngresos}</span>
+            <span id="incomes" className="text-4xl font-semibold">${totalIngresos}</span>
             <span className="text-xl font-semibold">Ingresos</span>
           </div>
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-blue rounded-2xl m-4 gap-12">
             <MonetizationOnOutlinedIcon fontSize="large" />
-            <span className="text-4xl font-semibold">${beneficio}</span>
+            <span id="benefits" className="text-4xl font-semibold">${beneficio}</span>
             <span className="text-xl font-semibold">Beneficio</span>
           </div>
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-red rounded-2xl m-4 gap-12">
             <HighlightOffIcon fontSize="large" />
-            <span className="text-4xl font-semibold">${totalGastos}</span>
+            <span id="expenses" className="text-4xl font-semibold">${totalGastos}</span>
             <span className="text-xl font-semibold">Gastos</span>
           </div>
         </div>

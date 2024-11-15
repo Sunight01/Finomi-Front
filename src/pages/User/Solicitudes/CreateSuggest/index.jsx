@@ -113,6 +113,9 @@ const CreateSuggest = ({ open, close, add }) => {
               <Controller
                 name="description"
                 control={control}
+                rules={{
+                  required: "La descripción es obligatoria",
+                }}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl
                     sx={{ m: 0, width: "100%" }}
@@ -138,7 +141,7 @@ const CreateSuggest = ({ open, close, add }) => {
               />
               <ThemeProvider theme={theme}>
                 <Stack spacing={0} direction="row">
-                  <Button type="onSubmit" variant="contained" color="black">
+                  <Button id="submit-button" type="onSubmit" variant="contained" color="black">
                     Crear
                   </Button>
                 </Stack>

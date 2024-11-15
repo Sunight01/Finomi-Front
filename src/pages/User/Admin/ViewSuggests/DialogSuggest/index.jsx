@@ -101,7 +101,7 @@ const DialogSuggest = ({ open, close, data }) => {
                 name="response"
                 control={control}
                 rules={{
-                  required: "La respuesta es obligatorio",
+                  required: "La respuesta es obligatoria",
                 }}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl
@@ -129,7 +129,7 @@ const DialogSuggest = ({ open, close, data }) => {
               <div className="flex flex-row gap-2 mt-4">
                 <ThemeProvider theme={theme}>
                   <Stack spacing={0} direction="row">
-                    <Button type="onSubmit" variant="contained" color="black">
+                    <Button id="submit-button" type="onSubmit" variant="contained" color="black">
                       Finalizar
                     </Button>
                   </Stack>

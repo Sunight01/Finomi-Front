@@ -59,6 +59,7 @@ const Solicitudes = () => {
           <div className=" flex flex-wrap justify-between sm:max-mdm:flex-col sm:max-mdm:items-center gap-4">
             <h1 className="text-2xl font-semibold">Mis solicitudes</h1>
             <button
+              id="create-req"
               className="rounded-lg border-black border-2 p-2 hover:bg-gray-200 active:bg-green-200 duration-200"
               onClick={handleOpen}
             >
@@ -69,21 +70,21 @@ const Solicitudes = () => {
             {solicitudes.length === 0 ? (
               <EmptyMessage message="No tienes solicitudes pendientes" />
             ) : (
-              <div className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2">
+              <div id="requests-list" className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2">
                 {currentSolicitudes.map((solicitud) => (
                   <div
                     key={solicitud.id}
                     className="bg-white rounded-lg shadow-md p-4 flex flex-col gap-4 flex-wrap min-w-[300px] sm:max-mbm:min-w-[200px] gap-3 flex-1"
                   >
                     <div className="flex flex-row justify-between items-center">
-                      <h2 className="text-xl font-semibold">
+                      <h2 id="card-title" className="text-xl font-semibold">
                         {solicitud.title}
                       </h2>
                     </div>
-                    <p className="text-gray-500 text-sm">
+                    <p id="card-description" className="text-gray-500 text-sm">
                       {solicitud.description}
                     </p>
-                    <p className="text-gray-500 text-sm">
+                    <p id="card-state" className="text-gray-500 text-sm">
                       {solicitud.state === "pending"
                         ? "Pendiente"
                         : "Finalizada"}

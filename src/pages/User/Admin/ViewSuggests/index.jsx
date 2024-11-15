@@ -69,7 +69,7 @@ const ViewSuggests = () => {
             {suggests.length === 0 ? (
               <EmptyMessage message="No tienes solicitudes pendientes" />
             ) : (
-              <div className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2">
+              <div id="requests-list" className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2">
                 {currentSuggests.map((solicitud) => (
                   <div
                     key={solicitud.id}
@@ -98,6 +98,7 @@ const ViewSuggests = () => {
                     <ThemeProvider theme={theme}>
                       <Stack spacing={0} direction="row">
                         <Button
+                          id="response-button"
                           type="onSubmit"
                           variant="contained"
                           color="black"

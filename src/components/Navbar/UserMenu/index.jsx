@@ -54,6 +54,7 @@ const UserMenu = () => {
       <div className="flex justify-center items-center">
         <Tooltip title="Editar perfil">
           <button
+            id="user-menu"
             className="bg-main-white rounded-3xl text-center h-12"
             onClick={handleClick}
             aria-controls={open ? "account-menu" : undefined}
@@ -65,7 +66,6 @@ const UserMenu = () => {
         </Tooltip>
         <Menu
           anchorEl={anchorEl}
-          id="account-menu"
           open={open}
           onClose={handleClose}
           onClick={handleClose}
@@ -101,7 +101,7 @@ const UserMenu = () => {
               padding: "0px",
             }}
           >
-            <Link to={"/usuario/perfil"} className="w-full h-full py-2 px-4">
+            <Link id="user-profile" to={"/usuario/perfil"} className="w-full h-full py-2 px-4">
               Perfil
             </Link>
           </MenuItem>
@@ -116,6 +116,7 @@ const UserMenu = () => {
               }}
             >
               <Link
+                id="user-request-button"
                 to={"/usuario/solicitudes"}
                 className="w-full h-full py-2 px-4"
               >
@@ -133,6 +134,7 @@ const UserMenu = () => {
               }}
             >
               <Link
+              id="see-user-requests"
                 to={"/usuario/admin/ver-solicitudes"}
                 className="w-full h-full py-2 px-4"
               >
@@ -142,6 +144,7 @@ const UserMenu = () => {
           )}
           <Divider />
           <MenuItem
+            id="user-logout"
             onClick={handleLogout}
             className="w-full h-full p-4"
             sx={{
