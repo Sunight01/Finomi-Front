@@ -28,7 +28,7 @@ const Finomi = () => {
                 }`}
                 onClick={() => handleClick("Analisis IA")}
               >
-                Analisis IA
+                Análisis IA
               </button>
             </Tooltip>
             <Divider orientation="vertical" variant="middle" flexItem />

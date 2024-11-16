@@ -32,7 +32,7 @@ const TransactionCard = ({
                 : ""
             }`}
           >
-            ${transaction.amount}
+            ${Number(transaction.amount)?.toLocaleString('es-CL')}
           </span>
         </div>
 

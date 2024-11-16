@@ -101,17 +101,17 @@ const Dashboard = () => {
         <div className="h-auto w-auto flex flex-wrap p-6 sm:max-md:p-2">
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-green rounded-2xl m-4 gap-12">
             <CheckCircleOutlineIcon fontSize="large" />
-            <span id="incomes" className="text-4xl font-semibold">${totalIngresos}</span>
+            <span id="incomes" className="text-4xl font-semibold">${totalIngresos.toLocaleString('es-CL')}</span>
             <span className="text-xl font-semibold">Ingresos</span>
           </div>
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-blue rounded-2xl m-4 gap-12">
             <MonetizationOnOutlinedIcon fontSize="large" />
-            <span id="benefits" className="text-4xl font-semibold">${beneficio}</span>
+            <span id="benefits" className="text-4xl font-semibold">${beneficio.toLocaleString('es-CL')}</span>
             <span className="text-xl font-semibold">Beneficio</span>
           </div>
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-red rounded-2xl m-4 gap-12">
             <HighlightOffIcon fontSize="large" />
-            <span id="expenses" className="text-4xl font-semibold">${totalGastos}</span>
+            <span id="expenses" className="text-4xl font-semibold">${totalGastos.toLocaleString('es-CL')}</span>
             <span className="text-xl font-semibold">Gastos</span>
           </div>
         </div>
@@ -128,7 +128,7 @@ const Dashboard = () => {
             </div>
             <div>
               <span className="text-3xl font-semibold">
-                ${mayorIngreso.amount}
+                ${Number(mayorIngreso.amount)?.toLocaleString('es-CL')}
               </span>
             </div>
           </div>
@@ -144,7 +144,7 @@ const Dashboard = () => {
             </div>
             <div>
               <span className="text-3xl font-semibold">
-                ${mayorGasto.amount}
+                ${Number(mayorGasto.amount)?.toLocaleString('es-CL')}
               </span>
             </div>
           </div>
@@ -152,7 +152,7 @@ const Dashboard = () => {
 
         <div className="h-auto w-auto m-8 sm:max-md:m-4 rounded-2xl flex flex-col justify-between shadow-lg p-8 sm:max-md:p-4">
           <h2 className="text-xl sm:max-md:text-lg font-semibold sm:max-md:text-center mb-2">
-            Ultimo consejo
+            Último consejo
           </h2>
           <ChatMessage user="assistant" message={iAdvice} />
         </div>

@@ -64,7 +64,7 @@ const Profile = () => {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <span className="text-lg text-gray-700">Correo electronico</span>
+                  <span className="text-lg text-gray-700">Correo electrónico</span>
                   <span className="text-xl font-semibold sm:max-mbm:text-2xl">
                     {email}
                   </span>
