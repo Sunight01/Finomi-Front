@@ -71,7 +71,7 @@ const CreateSuggest = ({ open, close, add }) => {
   return (
     <>
       {open && (
-        <DialogTemplate>
+        <DialogTemplate type={"form"}>
           <div className="flex flex-col px-8 sm:max-mdm:px-6 py-10 gap-4 max-w-full">
             <div className="flex flex-row justify-between items-center">
               <h1 className="text-2xl font-semibold">Crea una solicitud</h1>

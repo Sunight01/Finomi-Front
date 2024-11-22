@@ -15,6 +15,8 @@ import {
 
 import toast, { Toaster } from "react-hot-toast";
 
+import { Loading } from "../../Loading";
+
 // Colores para el Botón de MUI
 const theme = createTheme({
   palette: {
@@ -31,6 +33,7 @@ const Analysis = () => {
   const [userMessages, setUserMessages] = useState([
     { role: "assistant", content: "No tienes mensajes" },
   ]);
+  const [loading, setLoading] = useState(true);
 
   // Función para generar el análisis cuando se presiona el botón
   const generateAnalysis = async () => {
@@ -92,6 +95,7 @@ const Analysis = () => {
         // Actualizamos a un array con un solo mensaje
         setUserMessages([{ role: "assistant", content: "No tienes mensajes" }]);
       }
+      setLoading(false)
     } catch (error) {
       console.error("Error fetching messages:", error);
       // Manejo de errores: Actualizamos a un array con un solo mensaje
@@ -107,6 +111,7 @@ const Analysis = () => {
 
   return (
     <div className="p-8 flex flex-col gap-2">
+      {loading && <Loading />}
       {userMessages.map((message, index) => (
         <ChatMessage
           key={index}

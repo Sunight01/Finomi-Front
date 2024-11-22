@@ -12,6 +12,8 @@ import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import { Loading } from "../../../components/Loading";
+
 const theme = createTheme({
   palette: {
     black: {
@@ -27,6 +29,7 @@ const Profile = () => {
   const [username, setUsername] = useState("user");
   const [email, setEmail] = useState("email@email.com");
   const [openEdit, setOpenEdit] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
@@ -36,41 +39,47 @@ const Profile = () => {
     setOpenEdit(false);
   };
 
-  useEffect(() => {
+  const getUserStorage = () => {
     const ls = getLocalStorage("user");
     if (ls) {
       setUsername(ls.username);
       setEmail(ls.email);
     }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getUserStorage();
   }, []);
   return (
     <>
       <Template>
-        <div className="w-full h-full flex flex-col justify-center items-center px-2">
-          <div className="bg-violet-100 max-w-[500px] w-full max-h-[450px] h-full rounded-xl flex flex-col items-center">
-            
+        {loading && <Loading />}
+        <div className="flex flex-col justify-center items-center m-10 tracking-wide">
+          <div className="bg-main-white max-w-[700px] w-full max-h-[650px] h-full rounded-xl flex flex-col items-center sm:max-mbm:mt-4 border">
             <span className="font-semibold text-3xl my-4">Tu perfil</span>
             <Divider orientation="horizontal" variant="middle" flexItem />
 
-            <div className="flex flex-col w-full h-full items-center">
-
-              <div className="flex flex-col justify-center items-start mt-8 mb-10 sm:max-mbm:mt-[40px] sm:max-mbm:mb-[40px] gap-4 flex-1 flex-1 ">
-
+            <div className="flex flex-col items-center w-full h-full p-8 sm:max-mbm:p-4">
+              <div className="flex flex-col items-start mt-2 mb-10 sm:max-mbm:mt-[40px] sm:max-mbm:mb-[40px] gap-8 flex-1 flex-1 ">
                 <div className="flex flex-col gap-1">
-                  <span className="text-lg text-gray-700">Nombre de usuario</span>
-                  <span className="text-xl font-semibold sm:max-mbm:text-2xl">
+                  <span className="text-md font-semibold text-gray-500">
+                    Nombre de usuario
+                  </span>
+                  <span className="text-xl font-semibold">
                     {username}
                   </span>
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <span className="text-lg text-gray-700">Correo electrónico</span>
-                  <span className="text-xl font-semibold sm:max-mbm:text-2xl">
+                  <span className="text-md font-semibold text-gray-500">
+                    Correo electrónico
+                  </span>
+                  <span className="text-xl font-semibold">
                     {email}
                   </span>
                 </div>
-                
-                <div className="mt-6 sm:max-mbm:mt-12">
+                <div className="mt-6 sm:max-mbm:mt-12 w-full">
                   <ThemeProvider theme={theme}>
                     <Stack spacing={0} direction="row">
                       <Button
@@ -78,18 +87,16 @@ const Profile = () => {
                         type="onClick"
                         variant="contained"
                         color="black"
+                        fullWidth
                         onClick={() => handleOpenEdit()}
                       >
-                        EDITAR
+                        EDITAR PERFIL
                       </Button>
                     </Stack>
                   </ThemeProvider>
                 </div>
-
               </div>
-
             </div>
-
           </div>
         </div>
         <EditDialog open={openEdit} close={handleCloseEdit} />

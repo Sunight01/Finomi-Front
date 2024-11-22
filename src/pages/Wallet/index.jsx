@@ -23,6 +23,8 @@ import { Toaster } from "react-hot-toast";
 
 import { removeLocalStorage } from "../../functions/localStorage";
 
+import { Loading } from "../../components/Loading";
+
 const Wallet = () => {
   const months = [
     "Enero",
@@ -44,6 +46,8 @@ const Wallet = () => {
   const [openCreate, setOpenCreate] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openView, setOpenView] = useState(false);
+
+  const [loading, setLoading] = useState(true);
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const navigate = useNavigate();
@@ -166,27 +170,30 @@ const Wallet = () => {
     currentDate
   );
 
-  useEffect(() => {
-    // Funcion para obtener todas las transacciones del usuario
-    const callTransactions = async () => {
-      const res = await getTransactions();
-      if (res.status === 200) {
-        if (transactions.length === 0) {
-          getUserTransactions(res.response);
-        }
-      } else {
-        if (res.status === 401) {
-          removeLocalStorage("user");
-          removeLocalStorage("token");
-          navigate("/");
-        }
+  // Funcion para obtener todas las transacciones del usuario
+  const callTransactions = async () => {
+    const res = await getTransactions();
+    if (res.status === 200) {
+      if (transactions.length === 0) {
+        getUserTransactions(res.response);
       }
-    };
+    } else {
+      if (res.status === 401) {
+        removeLocalStorage("user");
+        removeLocalStorage("token");
+        navigate("/");
+      }
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
     callTransactions();
   }, []);
   return (
     <>
       <Template>
+        {loading && <Loading />}
         <div className="max-w-full h-auto flex flex-row justify-center items-center mt-8">
           <Tooltip title="Volver al mes anterior">
             <div className="flex flex-1 justify-center">
@@ -229,7 +236,7 @@ const Wallet = () => {
         <div className="w-full h-10 flex flex-row justify-center items-center mt-4">
           <Tooltip title="Añadir">
             <button
-              id='wallet-create-button'
+              id="wallet-create-button"
               className="w-16 h-16 rounded-full flex justify-center items-center hover:bg-gray-200 duration-200 absolute transform"
               onClick={handleOpenCreate}
             >

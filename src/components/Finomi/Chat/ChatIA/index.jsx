@@ -8,20 +8,25 @@ import {
   updateMessagesAPI,
 } from "../../../../services/api/chat";
 
+import { Loading } from "../../../Loading";
+
 const ChatIA = () => {
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hola! ¿cuales son tus dudas?" },
   ]);
   const [newMessage, setNewMessage] = useState(""); // Estado para el mensaje del usuario
+  const [loading, setLoading] = useState(true);
 
   // Funcion para manejar los mensajes del chat en la BD.
   const handleSaveMessages = async (updatedMessages) => {
     try {
       const getRes = await getChatAPI();
       if (getRes.status === 200) {
-        if (getRes.response.length === 0) { // Esto quiere decir que no hay mensajes en la BD
+        if (getRes.response.length === 0) {
+          // Esto quiere decir que no hay mensajes en la BD
           await saveMessagesAPI(updatedMessages);
-        } else { // Si hay mensajes, que se actualicen a medida que se envían.
+        } else {
+          // Si hay mensajes, que se actualicen a medida que se envían.
           handleUpdateMessages(updatedMessages);
         }
       }
@@ -75,22 +80,25 @@ const ChatIA = () => {
     }
   };
 
-  useEffect(() => {
-    // Función para obtener los mensajes del chat del usuario y actualizar el estado en caso de que exista el chat en la BD.
-    const getUserChat = async () => {
-      const res = await getChatAPI();
-      if (res.status === 200) {
-        if (res.response.length > 0) {
-          console.log(res.response[0].messages);
-          const updatedMessages = [...res.response[0].messages];
-          setMessages(updatedMessages);
-        }
+  // Función para obtener los mensajes del chat del usuario y actualizar el estado en caso de que exista el chat en la BD.
+  const getUserChat = async () => {
+    const res = await getChatAPI();
+    if (res.status === 200) {
+      if (res.response.length > 0) {
+        console.log(res.response[0].messages);
+        const updatedMessages = [...res.response[0].messages];
+        setMessages(updatedMessages);
       }
-    };
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
     getUserChat();
   }, []);
   return (
     <div className="p-8 flex flex-col mt-4 h-full">
+      {loading && <Loading />}
       <div className="max-h-[540px] flex-grow overflow-y-auto flex flex-col gap-4">
         {/* Mensajes en la parte superior */}
         {messages

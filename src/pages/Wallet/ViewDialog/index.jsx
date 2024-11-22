@@ -64,7 +64,7 @@ const ViewDialog = ({ open, close, deleteData, transaction }) => {
   return (
     <>
       {visible && (
-        <DialogTemplate>
+        <DialogTemplate type={"form"}>
           <div className="flex flex-col px-8 py-10 gap-4 max-w-full">
             <div className="flex flex-row justify-between items-center">
               <h1 className="text-2xl font-semibold">{data.title}</h1>

@@ -10,6 +10,8 @@ import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlin
 import { getTransactions } from "../../services/api/transactions";
 import { getChatAPI } from "../../services/api/chat";
 
+import { Loading } from "../../components/Loading";
+
 const Dashboard = () => {
   const [totalIngresos, setTotalIngresos] = useState(0);
   const [totalGastos, setTotalGastos] = useState(0);
@@ -18,6 +20,8 @@ const Dashboard = () => {
 
   const [mayorIngreso, setMayorIngreso] = useState({});
   const [mayorGasto, setMayorGasto] = useState({});
+
+  const [loading, setLoading] = useState(true);
 
   // Obtenemos la fecha actual
   const currentDate = new Date();
@@ -64,33 +68,35 @@ const Dashboard = () => {
     setTotalGastos(totalGastos);
   };
 
+  // Función para obtener todos los datos financieros del usuario
+  const callMaxTransactions = async () => {
+    try {
+      const res = await getTransactions();
+
+      if (res.status === 200) {
+        maxTransactions(res.response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Función para obtener el último consejo del usuario
+  const callIAdvice = async () => {
+    try {
+      const res = await getChatAPI();
+
+      if (res.status === 200) {
+        setIAdvice(res.response[0].messages[2].content);
+      }
+      setLoading(false)
+    } catch (error) {
+      console.log(error);
+      setLoading(false)
+    }
+  };
+
   useEffect(() => {
-    // Función para obtener todos los datos financieros del usuario
-    const callMaxTransactions = async () => {
-      try {
-        const res = await getTransactions();
-
-        if (res.status === 200) {
-          maxTransactions(res.response);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    // Función para obtener el último consejo del usuario
-    const callIAdvice = async () => {
-      try {
-        const res = await getChatAPI();
-
-        if (res.status === 200) {
-          setIAdvice(res.response[0].messages[2].content);
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    };
-
     callMaxTransactions();
     callIAdvice();
   }, []);
@@ -98,20 +104,27 @@ const Dashboard = () => {
   return (
     <>
       <Template>
+        {loading && <Loading />}
         <div className="h-auto w-auto flex flex-wrap p-6 sm:max-md:p-2">
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-green rounded-2xl m-4 gap-12">
             <CheckCircleOutlineIcon fontSize="large" />
-            <span id="incomes" className="text-4xl font-semibold">${totalIngresos.toLocaleString('es-CL')}</span>
+            <span id="incomes" className="text-4xl font-semibold">
+              ${totalIngresos.toLocaleString("es-CL")}
+            </span>
             <span className="text-xl font-semibold">Ingresos</span>
           </div>
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-blue rounded-2xl m-4 gap-12">
             <MonetizationOnOutlinedIcon fontSize="large" />
-            <span id="benefits" className="text-4xl font-semibold">${beneficio.toLocaleString('es-CL')}</span>
+            <span id="benefits" className="text-4xl font-semibold">
+              ${beneficio.toLocaleString("es-CL")}
+            </span>
             <span className="text-xl font-semibold">Beneficio</span>
           </div>
           <div className="flex flex-1 flex-col shadow-lg justify-center items-center content-center h-60 min-w-[200px] bg-light-red rounded-2xl m-4 gap-12">
             <HighlightOffIcon fontSize="large" />
-            <span id="expenses" className="text-4xl font-semibold">${totalGastos.toLocaleString('es-CL')}</span>
+            <span id="expenses" className="text-4xl font-semibold">
+              ${totalGastos.toLocaleString("es-CL")}
+            </span>
             <span className="text-xl font-semibold">Gastos</span>
           </div>
         </div>
@@ -128,7 +141,7 @@ const Dashboard = () => {
             </div>
             <div>
               <span className="text-3xl font-semibold">
-                ${Number(mayorIngreso.amount)?.toLocaleString('es-CL')}
+                ${Number(mayorIngreso.amount)?.toLocaleString("es-CL")}
               </span>
             </div>
           </div>
@@ -144,7 +157,7 @@ const Dashboard = () => {
             </div>
             <div>
               <span className="text-3xl font-semibold">
-                ${Number(mayorGasto.amount)?.toLocaleString('es-CL')}
+                ${Number(mayorGasto.amount)?.toLocaleString("es-CL")}
               </span>
             </div>
           </div>

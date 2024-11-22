@@ -4,15 +4,18 @@ import Template from "../../../components/templates/Template";
 import { EmptyMessage } from "../../../components/Wallet/EmptyMessage";
 import { CreateSuggest } from "./CreateSuggest";
 
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
 
 import { getSuggestionsAPI } from "../../../services/api/suggest";
+
+import { Loading } from "../../../components/Loading";
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(4); // Cantidad de solicitudes por página
+  const [loading, setLoading] = useState(true);
 
   const handleOpen = () => {
     setOpen(true);
@@ -32,6 +35,7 @@ const Solicitudes = () => {
       if (res.status === 200) {
         setSolicitudes(res.response);
       }
+      setLoading(false);
     } catch (error) {
       setSolicitudes([]);
     }
@@ -55,6 +59,7 @@ const Solicitudes = () => {
   return (
     <>
       <Template>
+        {loading && <Loading />}
         <div className="p-10">
           <div className=" flex flex-wrap justify-between sm:max-mdm:flex-col sm:max-mdm:items-center gap-4">
             <h1 className="text-2xl font-semibold">Mis solicitudes</h1>
@@ -70,7 +75,10 @@ const Solicitudes = () => {
             {solicitudes.length === 0 ? (
               <EmptyMessage message="No tienes solicitudes pendientes" />
             ) : (
-              <div id="requests-list" className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2">
+              <div
+                id="requests-list"
+                className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2"
+              >
                 {currentSolicitudes.map((solicitud) => (
                   <div
                     key={solicitud.id}

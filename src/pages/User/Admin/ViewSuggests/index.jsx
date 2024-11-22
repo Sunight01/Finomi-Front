@@ -10,6 +10,8 @@ import { Button, Stack } from "@mui/material";
 import { getAllSuggestionsAPI } from "../../../../services/api/suggest";
 import { EmptyMessage } from "../../../../components/Wallet/EmptyMessage";
 
+import { Loading } from "../../../../components/Loading";
+
 const theme = createTheme({
   palette: {
     black: {
@@ -27,6 +29,7 @@ const ViewSuggests = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(4); // Cantidad de solicitudes por página
   const [dialogData, setDialogData] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const handleOpen = (data) => {
     setDialogData(data);
@@ -38,9 +41,15 @@ const ViewSuggests = () => {
   };
 
   const callSuggests = async () => {
-    const res = await getAllSuggestionsAPI();
-    if (res.status === 200) {
-      setSuggests(res.response);
+    try {
+      const res = await getAllSuggestionsAPI();
+      if (res.status === 200) {
+        setSuggests(res.response);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error)
+      setLoading(false);
     }
   };
 
@@ -59,6 +68,7 @@ const ViewSuggests = () => {
   return (
     <>
       <Template>
+        {loading && <Loading />}
         <div className="p-10">
           <div className=" flex flex-wrap justify-between sm:max-mdm:flex-col sm:max-mdm:items-center gap-4">
             <h1 className="text-2xl font-semibold">
@@ -69,7 +79,10 @@ const ViewSuggests = () => {
             {suggests.length === 0 ? (
               <EmptyMessage message="No tienes solicitudes pendientes" />
             ) : (
-              <div id="requests-list" className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2">
+              <div
+                id="requests-list"
+                className="flex flex-wrap gap-4 mbm:max-xl:justify-center m-2"
+              >
                 {currentSuggests.map((solicitud) => (
                   <div
                     key={solicitud.id}
