@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { ChatMessage } from "../ChatMessage";
 
+import Skeleton from "@mui/material/Skeleton";
+import { motion } from "framer-motion";
+
 import {
   getChatAPI,
   saveMessagesAPI,
@@ -16,6 +19,7 @@ const ChatIA = () => {
   ]);
   const [newMessage, setNewMessage] = useState(""); // Estado para el mensaje del usuario
   const [loading, setLoading] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState(false);
 
   // Funcion para manejar los mensajes del chat en la BD.
   const handleSaveMessages = async (updatedMessages) => {
@@ -37,13 +41,16 @@ const ChatIA = () => {
 
   // Función para enviar los mensajes a la IA y actualizar el estado
   const sendMessages = async (updatedMessages) => {
+    setLoadingMessage(true);
     try {
       const res = await sendMessageAPI(updatedMessages);
       setMessages((prevMessages) => [...prevMessages, res.response.message]); // Añade la respuesta de la IA
       const upMessages = [...updatedMessages, res.response.message];
       handleSaveMessages(upMessages);
+      setLoadingMessage(false);
     } catch (error) {
       console.log(error);
+      setLoadingMessage(false);
     }
   };
 
@@ -110,6 +117,35 @@ const ChatIA = () => {
               message={message.content}
             />
           ))}
+        {loadingMessage && (
+          <div className="flex flex-col items-left justify-center w-full">
+            <motion.div
+              initial={{ x: "-100%", opacity: 0 }}
+              animate={{ x: "0%", opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              exit={{ x: "100%", opacity: 0 }} // Desaparece hacia la derecha
+            >
+              <Skeleton
+                animation="wave"
+                variant="text"
+                height={20}
+                width={1000}
+              />
+              <Skeleton
+                animation="wave"
+                variant="text"
+                height={20}
+                width={950}
+              />
+              <Skeleton
+                animation="wave"
+                variant="text"
+                height={20}
+                width={800}
+              />
+            </motion.div>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-2 mt-4">
