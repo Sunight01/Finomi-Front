@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ChatMessage } from "../ChatMessage";
 
 import Skeleton from "@mui/material/Skeleton";
@@ -20,6 +20,15 @@ const ChatIA = () => {
   const [newMessage, setNewMessage] = useState(""); // Estado para el mensaje del usuario
   const [loading, setLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState(false);
+
+  const chatContainerRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  };
 
   // Funcion para manejar los mensajes del chat en la BD.
   const handleSaveMessages = async (updatedMessages) => {
@@ -46,6 +55,7 @@ const ChatIA = () => {
       const res = await sendMessageAPI(updatedMessages);
       setMessages((prevMessages) => [...prevMessages, res.response.message]); // Añade la respuesta de la IA
       const upMessages = [...updatedMessages, res.response.message];
+      console.log(upMessages);
       handleSaveMessages(upMessages);
       setLoadingMessage(false);
     } catch (error) {
@@ -101,12 +111,19 @@ const ChatIA = () => {
   };
 
   useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
     getUserChat();
   }, []);
   return (
     <div className="p-8 flex flex-col mt-4 h-full">
       {loading && <Loading />}
-      <div className="max-h-[540px] flex-grow overflow-y-auto flex flex-col gap-4">
+      <div
+        ref={chatContainerRef}
+        className="max-h-[540px] flex-grow overflow-y-auto flex flex-col gap-4"
+      >
         {/* Mensajes en la parte superior */}
         {messages
           .filter((_, index) => index !== 1 && index !== 2) // Filtra los mensajes para excluir las posiciones 1 y 2
