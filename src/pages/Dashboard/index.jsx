@@ -12,6 +12,10 @@ import { getChatAPI } from "../../services/api/chat";
 
 import { Loading } from "../../components/Loading";
 
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
+import { responsiveFontSizes } from "@mui/material";
+
 const Dashboard = () => {
   const [totalIngresos, setTotalIngresos] = useState(0);
   const [totalGastos, setTotalGastos] = useState(0);
@@ -25,6 +29,34 @@ const Dashboard = () => {
 
   // Obtenemos la fecha actual
   const currentDate = new Date();
+
+  ChartJS.register(ArcElement, Tooltip, Legend);
+
+  const data = {
+    labels: ["Total de ingresos", "Total de gastos"],
+    datasets: [
+      {
+        label: "Resumen",
+        data: [totalIngresos, totalGastos],
+        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
+        borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false, // Permite manipular la altura y el ancho
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
+    layout: {
+      padding: 10, // Ajusta el espacio dentro del gráfico
+    },
+  };
 
   const filterTransactionsByMonth = (transactions, date) => {
     return transactions.filter((transaction) => {
@@ -89,10 +121,10 @@ const Dashboard = () => {
       if (res.status === 200) {
         setIAdvice(res.response[0].messages[2].content);
       }
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -129,37 +161,42 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="text-xl h-auto w-auto m-8 sm:max-md:m-4 flex sm:max-lg:flex-wrap sm:max-lg:gap-10">
-          <div className="bg-light-green w-full h-auto mr-2 rounded-2xl flex sm:max-md:flex-col justify-between sm:max-md:justify-center items-center shadow-lg px-20 sm:max-md:px-8 py-4">
-            <div>
-              <span className="flex justify-center items-center text-center font-semibold">
-                Mayor ingreso
-              </span>
-              <span className="flex justify-center items-center">
-                {mayorIngreso.title}
-              </span>
+        <div className="text-xl h-auto w-auto m-8 sm:max-md:m-4 flex sm:max-lg:flex-wrap sm:max-lg:gap-10 flex flex-row justify-between items-center">
+          <div className="flex flex-col gap-10 w-full">
+            <div className="bg-light-green w-full h-auto mr-2 rounded-2xl flex sm:max-md:flex-col justify-between sm:max-md:justify-center items-center shadow-lg px-20 sm:max-md:px-8 py-4">
+              <div>
+                <span className="flex justify-center items-center text-center font-semibold">
+                  Mayor ingreso
+                </span>
+                <span className="flex justify-center items-center">
+                  {mayorIngreso.title}
+                </span>
+              </div>
+              <div>
+                <span className="text-3xl font-semibold">
+                  ${Number(mayorIngreso.amount)?.toLocaleString("es-CL")}
+                </span>
+              </div>
             </div>
-            <div>
-              <span className="text-3xl font-semibold">
-                ${Number(mayorIngreso.amount)?.toLocaleString("es-CL")}
-              </span>
+            <div className="bg-light-red w-full h-auto mr-2 rounded-2xl flex sm:max-md:flex-col justify-between sm:max-md:justify-center items-center shadow-lg px-20 sm:max-md:px-8 py-4">
+              <div>
+                <span className="flex justify-center items-center text-center font-semibold">
+                  Mayor gasto
+                </span>
+                <span className="flex justify-center items-center">
+                  {mayorGasto.title}
+                </span>
+              </div>
+              <div>
+                <span className="text-3xl font-semibold">
+                  ${Number(mayorGasto.amount)?.toLocaleString("es-CL")}
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="bg-light-red w-full h-auto mr-2 rounded-2xl flex sm:max-md:flex-col justify-between sm:max-md:justify-center items-center shadow-lg px-20 sm:max-md:px-8 py-4">
-            <div>
-              <span className="flex justify-center items-center text-center font-semibold">
-                Mayor gasto
-              </span>
-              <span className="flex justify-center items-center">
-                {mayorGasto.title}
-              </span>
-            </div>
-            <div>
-              <span className="text-3xl font-semibold">
-                ${Number(mayorGasto.amount)?.toLocaleString("es-CL")}
-              </span>
-            </div>
+          <div className="w-[400px] sm:max-lg:w-full h-[300px] flex flex-col justify-center items-center">
+            <Pie data={data} options={options} />
           </div>
         </div>
 
