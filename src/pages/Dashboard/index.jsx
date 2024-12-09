@@ -38,8 +38,8 @@ const Dashboard = () => {
       {
         label: "Resumen",
         data: [totalIngresos, totalGastos],
-        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
-        borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
+        backgroundColor: ["rgba(144, 238, 144, 0.2)", "rgba(255, 99, 132, 0.2)"],
+        borderColor: ["rgba(75, 192, 75, 1)", "rgba(255, 99, 132, 1)"],
         borderWidth: 1,
       },
     ],
@@ -195,9 +195,11 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="w-[400px] sm:max-lg:w-full h-[300px] flex flex-col justify-center items-center">
-            <Pie data={data} options={options} />
-          </div>
+          {(totalIngresos > 0 || totalGastos > 0) && (
+            <div className="w-[400px] sm:max-lg:w-full h-[300px] flex flex-col justify-center items-center">
+              <Pie data={data} options={options} />
+            </div>
+          )}
         </div>
 
         <div className="h-auto w-auto m-8 sm:max-md:m-4 rounded-2xl flex flex-col justify-between shadow-lg p-8 sm:max-md:p-4">
